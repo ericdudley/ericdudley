@@ -1,0 +1,51 @@
+:root {
+    --dark-color: #000;
+    --light-color: #fff;
+    --pulse-duration: 10s;
+    --timing-function: linear
+}
+
+@keyframes background-fade {
+    from {
+        border-color: var(--dark-color);
+    } 
+    50% {
+        border-color: var(--light-color);
+    }
+    to {
+        border-color: var(--dark-color);
+    }
+}
+
+@keyframes blur-loop {
+    from {
+        filter: blur(0px);
+    } 
+    80% {
+        filter: blur(0px);
+    }
+    90% {
+        filter: blur(8px);
+    }  
+    to {
+        filter: blur(0px);
+    } 
+}
+
+@keyframes text-fade {
+    from {
+        color: var(--light-color);
+    } 
+    50% {
+        color: var(--dark-color);
+    }
+    to {
+        color: var(--light-color);
+    }
+}
+
+@keyframes rainbow { 
+    0%{background-position:0% 82%}
+    50%{background-position:100% 19%}
+    100%{background-position:0% 82%}
+}
