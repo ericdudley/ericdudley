@@ -1,8 +1,10 @@
+@import "./animations.scss";
+
 /* Whole Page Styles */
 :root {
     --h2-offset: calc(100vw / 20);
 
-    --full-dim: calc(1.25 * max(100vw, 100vh))
+    --full-dim: calc(1.25 * max(100vw, 100vh));
 
     --small-device-width: 575.98px;
 }

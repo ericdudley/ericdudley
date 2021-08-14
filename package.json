@@ -1,0 +1,36 @@
+{
+  "name": "ericdudley",
+  "version": "1.0.0",
+  "description": "ericdudley.com, my personal website",
+  "main": "index.js",
+  "scripts": {
+    "start": "parcel src/index.html",
+    "build": "parcel build src/index.html",
+    "lint": "eslint src/**/*.{js,ts}",
+    "lint:fix": "eslint src/**/*.{js,ts} --fix"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ericdudley/ericdudley.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ericdudley/ericdudley/issues"
+  },
+  "homepage": "https://github.com/ericdudley/ericdudley#readme",
+  "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^4.29.1",
+    "@typescript-eslint/parser": "^4.29.1",
+    "eslint": "^7.32.0",
+    "eslint-config-airbnb-base": "^14.2.1",
+    "eslint-import-resolver-typescript": "^2.4.0",
+    "eslint-plugin-import": "^2.24.0",
+    "parcel-bundler": "^1.12.5",
+    "typescript": "^4.3.5"
+  },
+  "dependencies": {
+    "sass": "^1.37.5"
+  }
+}
