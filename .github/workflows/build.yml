@@ -22,6 +22,7 @@ jobs:
         run: npm run lint
       - name: Build for production
         run: npm run build
+        run: echo "new.ericdudley.com" > ./dist/CNAME
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v3
         with:
