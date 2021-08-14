@@ -1,12 +1,22 @@
 name: Build Website
-on: [push]
+on:
+  push:
+    branches-ignore:
+      - gh-pages 
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
       - name: Check out repository code
         uses: actions/checkout@v2
+      - name: Cache dependencies
+        id: cache-dependencies
+        uses: actions/cache@v2
+        with:
+          path: node_modules
+          key: ${{ runner.os }}-dependencies
       - name: Install deps
+        if: steps.cache-dependencies.outputs.cache-hit != 'true'
         run: npm install
       - name: Lint
         run: npm run lint
