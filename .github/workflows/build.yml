@@ -25,6 +25,7 @@ jobs:
       - name: Create CNAME file
         run: echo "new.ericdudley.com" > ./dist/CNAME
       - name: Deploy
+        if: contains(github.ref, "main")
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
