@@ -6,6 +6,8 @@ jobs:
     steps:
       - name: Check out repository code
         uses: actions/checkout@v2
+      - name: Install deps
+        run: npm install
       - name: Lint
         run: npm run lint
       - name: Build for production
