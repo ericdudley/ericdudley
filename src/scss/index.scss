@@ -1,15 +1,17 @@
+@use "sass:math";
 @import "./animations.scss";
 
 /* Whole Page Styles */
-$h2-offset: 100vw / 20;
-$full-dim: max(100vw * 1.25, 100vh * 1.25);
+$h2-offset: math.div(100vw, 20);
+$full-dim: 100vmax * 1.25;
 $small-device-width: 575.98px;
-$stretch-outer-circle-size: min(90vw, 90vh);
-$button-size: min(10vw, 10vh);
-$half-button-size: min(6vw, 6vh);
-$dash-circle-size: min(18vw, 18vh);
-$dash-size: Min(10vw, 10vh);
-$dash-font-size: min(6vw, 6vh);
+$stretch-outer-circle-active-size: 90vmin;
+$stretch-outer-circle-size: 30vmin;
+$button-size: 10vmin;
+$dash-circle-size: 18vmin;
+$dash-size: 10vmin;
+$set-dash-size: $dash-size * 1.3;
+$dash-font-size: 6vmin;
 $outer-circle-color: #2e2e2e;
 $stretch-background-color: rgb(63, 155, 101);
 
@@ -45,7 +47,7 @@ $stretch-background-color: rgb(63, 155, 101);
     top: 50%;
     left: 50%;
 
-    $angle: (180 / $item-count);
+    $angle: math.div(180, $item-count);
     $rot: $offset-deg;
     transform-origin: center;
 
@@ -286,16 +288,28 @@ h2 > a {
   }
 }
 
+#stretch-title {
+  @include absolute-centered();
+  top: 30%;
+}
+
 .stretch {
   width: 100%;
   height: 100%;
   @include absolute-centered();
-  // background-color: rgb(63, 155, 101);
   border-radius: 10000px;
 
   &-outer-circle {
     width: $stretch-outer-circle-size;
     height: $stretch-outer-circle-size;
+
+    &[data-status="active"] {
+      width: $stretch-outer-circle-active-size;
+      height: $stretch-outer-circle-active-size;
+    }
+
+    transition: width 1000ms ease-out, height 1000ms ease-out;
+
     @include absolute-centered();
     border-radius: 10000px;
     background: $outer-circle-color;
@@ -307,7 +321,7 @@ h2 > a {
     @include absolute-centered();
     border-radius: 10000px;
     background-color: $stretch-background-color;
-    transition: width 1.2s linear, height 1.2s linear;
+    transition: width 500ms ease-out, height 500ms ease-out;
   }
 
   &__text {
@@ -353,17 +367,17 @@ h2 > a {
 
       border-color: transparent transparent transparent $outer-circle-color;
       transition: 100ms all ease;
-      transform: translateX(min(1vw, 1vh));
+      transform: translateX(1vmin);
       cursor: pointer;
 
       // play state
       border-style: solid;
-      border-width: $half-button-size 0 $half-button-size $button-size;
+      border-width: $button-size * 0.6 0 $button-size * 0.6 $button-size;
 
       &.pause {
         border-style: double;
         border-width: 0px 0 0px $button-size;
-        transform: translateX(min(0vw, 0vh));
+        transform: none;
       }
 
       &:hover {
@@ -376,10 +390,10 @@ h2 > a {
     @include absolute-centered();
 
     &__dash {
-      transition: opacity 3s;
-      width: calc(#{$dash-size} / 1.5);
+      transition: opacity 1s;
+      width: math.div($dash-size, 1.5);
       height: $dash-size;
-      border-radius: 50%;
+      border-radius: 40%;
       background: rgba(255, 255, 255, 0.2);
 
       &[data-status="active"] {
@@ -408,13 +422,16 @@ h2 > a {
     );
 
     &__dash {
+      width: math.div($set-dash-size, 1.5);
+      height: $set-dash-size;
+
       &[data-status="active"] {
-        background: rgb(103, 255, 230);
+        background: rgb(76, 255, 117);
         animation: pulse 4s infinite forwards linear;
       }
 
       &[data-status="done"] {
-        background: rgb(0, 238, 255);
+        background: rgb(76, 255, 117);
       }
     }
   }

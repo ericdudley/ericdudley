@@ -31,6 +31,8 @@
     "typescript": "^4.3.5"
   },
   "dependencies": {
+    "audio": "^1.2.0",
+    "howler": "^2.2.3",
     "sass": "^1.37.5"
   }
 }
