@@ -1,12 +1,24 @@
+@use "sass:math";
 @import "./animations.scss";
 
 /* Whole Page Styles */
-:root {
-  --h2-offset: calc(100vw / 20);
+$h2-offset: math.div(100vw, 20);
+$full-dim: 100vmax * 1.25;
+$small-device-width: 575.98px;
+$stretch-outer-circle-active-size: 90vmin;
+$stretch-outer-circle-size: 30vmin;
+$button-size: 10vmin;
+$dash-circle-size: 18vmin;
+$dash-size: 10vmin;
+$set-dash-size: $dash-size * 1.3;
+$dash-font-size: 6vmin;
+$outer-circle-color: #2e2e2e;
+$stretch-background-color: rgb(63, 155, 101);
 
-  --full-dim: calc(1.25 * max(100vw, 100vh));
-
-  --small-device-width: 575.98px;
+@media (max-width: $small-device-width) {
+  $h2-offset: 0;
+  $button-size: 80px;
+  $dash-size: 40px;
 }
 
 @mixin absolute-centered {
@@ -16,14 +28,49 @@
   transform: translate(-50%, -50%);
 }
 
-@media (max-width: 575.98px /*var(--small-device-width)*/) {
-  :root {
-    --h2-offset: 0;
+/// Mixin to place items on a circle
+/// @author Kitty Giraudel
+/// @author Ana Tudor
+/// @param {Integer} $item-count - Number of items on the circle
+/// @param {Length} $circle-size - Large circle size
+/// @param {Length} $item-size - Single item size
+@mixin on-circle($item-count, $circle-size, $item-size, $offset-deg) {
+  width: $circle-size;
+  height: $circle-size;
+  padding: 0;
+  border-radius: 50%;
+  list-style: none;
+
+  > * {
+    display: block;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+
+    $angle: math.div(180, $item-count);
+    $rot: $offset-deg;
+    transform-origin: center;
+
+    @for $i from 1 through $item-count {
+      &:nth-of-type(#{$i}) {
+        transform: translateX(-50%)
+          translateY(-50%)
+          rotate($rot)
+          translate($circle-size);
+        // rotate($rot * -1);
+      }
+
+      $rot: $rot + $angle;
+    }
   }
 }
 
 .no-transition-on-load * {
   transition: none !important;
+}
+
+.hidden {
+  opacity: 0;
 }
 
 body {
@@ -75,8 +122,7 @@ header {
 }
 
 header > .name-text {
-  animation: blur-loop var(--pulse-duration) infinite forwards
-    var(--timing-function);
+  animation: blur-loop $pulse-duration infinite forwards $timing-function;
   width: fit-content;
   padding: 1em;
   border-left: white 12px solid;
@@ -157,9 +203,8 @@ header > .name-text {
 }
 
 h1 {
-  animation: text-fade var(--pulse-duration) infinite forwards
-      var(--timing-function),
-    blur-loop var(--pulse-duration) infinite forwards var(--timing-function);
+  animation: text-fade $pulse-duration infinite forwards $timing-function,
+    blur-loop $pulse-duration infinite forwards $timing-function;
   font-size: 48px;
 }
 
@@ -176,15 +221,15 @@ h2:nth-child(1) {
 }
 
 h2:nth-child(2) {
-  margin-left: calc(var(--h2-offset) * 1);
+  margin-left: $h2-offset * 1;
 }
 
 h2:nth-child(3) {
-  margin-left: calc(var(--h2-offset) * 2);
+  margin-left: $h2-offset * 2;
 }
 
 h2:nth-child(4) {
-  margin-left: calc(var(--h2-offset) * 3);
+  margin-left: $h2-offset * 3;
 }
 
 h2 > a {
@@ -206,7 +251,7 @@ h2 > a {
   width: 300px;
 }
 
-@media (max-width: 575.98px /*var(--small-device-width)*/) {
+@media (max-width: $small-device-width) {
   h2 {
     font-size: 1.5em;
   }
@@ -238,26 +283,45 @@ h2 > a {
     height: 0px;
   }
   to {
-    width: var(--full-dim);
-    height: var(--full-dim);
+    width: $full-dim;
+    height: $full-dim;
   }
 }
 
-.stretch {
-  width: 50%;
-  height: 50%;
+#stretch-title {
   @include absolute-centered();
-  background-color: rgb(63, 155, 101);
+  top: 30%;
+}
+
+.stretch {
+  width: 100%;
+  height: 100%;
+  @include absolute-centered();
   border-radius: 10000px;
-  //   animation: grow 3s ease-in-out forwards reverse;
 
   &-outer-circle {
-    width: 75%;
-    height: 75%;
+    width: $stretch-outer-circle-size;
+    height: $stretch-outer-circle-size;
+
+    &[data-status="active"] {
+      width: $stretch-outer-circle-active-size;
+      height: $stretch-outer-circle-active-size;
+    }
+
+    transition: width 1000ms ease-out, height 1000ms ease-out;
+
     @include absolute-centered();
     border-radius: 10000px;
-    border: 4px rgb(63, 155, 101);
-    background-color: red;
+    background: $outer-circle-color;
+  }
+
+  &-inner-circle {
+    width: 100%;
+    height: 100%;
+    @include absolute-centered();
+    border-radius: 10000px;
+    background-color: $stretch-background-color;
+    transition: width 500ms ease-out, height 500ms ease-out;
   }
 
   &__text {
@@ -279,18 +343,7 @@ h2 > a {
 
   &__time > h4 {
     font-size: 8vw;
-  }
-
-  &__rep {
-    position: absolute;
-    left: 75%;
-    top: 25%;
-  }
-
-  &__set {
-    position: absolute;
-    left: 25%;
-    top: 25%;
+    display: none;
   }
 
   &__time {
@@ -301,15 +354,94 @@ h2 > a {
 
   &__button {
     @include absolute-centered();
-    top: 85%;
 
     & > button {
-      width: 100px;
-      height: 50px;
-      border-radius: 10000px;
-      background-color: red;
       border: none;
-      text-transform: uppercase;
+      outline: none;
+
+      border: 0;
+      background: transparent;
+      box-sizing: border-box;
+      width: 0;
+      height: $button-size;
+
+      border-color: transparent transparent transparent $outer-circle-color;
+      transition: 100ms all ease;
+      transform: translateX(1vmin);
+      cursor: pointer;
+
+      // play state
+      border-style: solid;
+      border-width: $button-size * 0.6 0 $button-size * 0.6 $button-size;
+
+      &.pause {
+        border-style: double;
+        border-width: 0px 0 0px $button-size;
+        transform: none;
+      }
+
+      &:hover {
+        border-color: transparent transparent transparent #404040;
+      }
     }
+  }
+
+  &__dashes {
+    @include absolute-centered();
+
+    &__dash {
+      transition: opacity 1s;
+      width: math.div($dash-size, 1.5);
+      height: $dash-size;
+      border-radius: 40%;
+      background: rgba(255, 255, 255, 0.2);
+
+      &[data-status="active"] {
+        background: rgb(255, 255, 255);
+        animation: pulse 2s infinite forwards linear;
+      }
+
+      &[data-status="done"] {
+        background: rgb(255, 255, 255);
+      }
+
+      & > span {
+        @include absolute-centered();
+        color: $stretch-background-color;
+        font-size: $dash-font-size;
+      }
+    }
+  }
+
+  &__set__dashes {
+    @include on-circle(
+      $item-count: 3,
+      $circle-size: $dash-circle-size,
+      $item-size: $dash-size,
+      $offset-deg: 120deg
+    );
+
+    &__dash {
+      width: math.div($set-dash-size, 1.5);
+      height: $set-dash-size;
+
+      &[data-status="active"] {
+        background: rgb(76, 255, 117);
+        animation: pulse 4s infinite forwards linear;
+      }
+
+      &[data-status="done"] {
+        background: rgb(76, 255, 117);
+      }
+    }
+  }
+
+  &__rep__dashes {
+    @include on-circle(
+      $item-count: 5,
+      $circle-size: $dash-circle-size,
+      $item-size: $dash-size,
+      $offset-deg: -72deg
+    );
   }
 }

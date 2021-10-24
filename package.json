@@ -7,7 +7,8 @@
     "start": "parcel src/index.html",
     "build": "parcel build src/index.html",
     "lint": "eslint src/**/*.{js,ts}",
-    "lint:fix": "eslint src/**/*.{js,ts} --fix"
+    "lint:fix": "eslint src/**/*.{js,ts} --fix",
+    "tsc": "tsc --watch"
   },
   "repository": {
     "type": "git",
@@ -31,6 +32,8 @@
     "typescript": "^4.3.5"
   },
   "dependencies": {
+    "audio": "^1.2.0",
+    "howler": "^2.2.3",
     "sass": "^1.37.5"
   }
 }
