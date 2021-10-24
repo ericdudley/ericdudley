@@ -4,6 +4,7 @@ const breakTimeS = 7;
 const repTimeS = 30;
 const maxSet = 3;
 const maxRep = 5;
+const stepDurationMs = 1000;
 type Sound =
   | "begin"
   | "rep_start"
@@ -20,16 +21,18 @@ const say = (sound: Sound) => {
 
 const initStretch = () => {
   const button: HTMLButtonElement = document.querySelector("#stretch-button");
-  const repElement: HTMLHeadingElement = document.querySelector("#stretch-rep");
-  const setElement: HTMLHeadingElement = document.querySelector("#stretch-set");
   const timeElement: HTMLHeadingElement =
     document.querySelector("#stretch-time");
   const innerElement: HTMLDivElement = document.querySelector(
     "#stretch-inner-circle"
   );
+  const repDashElements = document.querySelectorAll<HTMLDivElement>(
+    ".stretch__rep__dashes__dash"
+  );
+  const setDashElements = document.querySelectorAll<HTMLDivElement>(
+    ".stretch__set__dashes__dash"
+  );
 
-  repElement.innerText = String(maxRep);
-  setElement.innerText = String(maxSet);
   timeElement.innerText = `${repTimeS}s`;
 
   let isActive = false;
@@ -39,21 +42,53 @@ const initStretch = () => {
   let currentSet = 0;
   let currentTime = 0;
   let currentStartTime = 0;
+  let lastStepTimestamp = 0;
 
   const updateDOM = () => {
-    repElement.innerText = `${currentRep}${currentSide}`;
-    setElement.innerText = String(currentSet);
+    for (let i = 0; i < repDashElements.length; i += 1) {
+      if (!isActive) {
+        repDashElements[i].dataset.status = "";
+        repDashElements[i].innerHTML = "";
+      } else {
+        if (i + 1 < currentRep) {
+          repDashElements[i].dataset.status = "done";
+          repDashElements[i].innerHTML = "";
+        } else if (i + 1 === currentRep) {
+          repDashElements[i].dataset.status = "active";
+          repDashElements[i].innerHTML = `<span>${currentSide}</span>`;
+        } else {
+          repDashElements[i].dataset.status = undefined;
+          repDashElements[i].innerHTML = "";
+        }
+      }
+    }
+
+    for (let i = 0; i < setDashElements.length; i += 1) {
+      if (!isActive) {
+        setDashElements[i].dataset.status = "";
+      } else {
+        if (i + 1 < currentSet) {
+          setDashElements[i].dataset.status = "done";
+        } else if (i + 1 === currentSet) {
+          setDashElements[i].dataset.status = "active";
+        } else {
+          setDashElements[i].dataset.status = undefined;
+        }
+      }
+    }
     timeElement.innerText = `${currentTime}s`;
-    const progress =
-      50 +
-      25 *
-        ((isBreak ? currentTime : currentStartTime - currentTime) /
-          currentStartTime);
+    const progress = isActive
+      ? 50 +
+        50 *
+          ((isBreak ? currentTime : currentStartTime - currentTime) /
+            currentStartTime)
+      : 100;
+
     innerElement.style.width = `${progress}%`;
     innerElement.style.height = `${progress}%`;
   };
 
-  const stepInterval = setInterval(() => {
+  const step = () => {
     if (!isActive) {
       return;
     }
@@ -101,10 +136,28 @@ const initStretch = () => {
     }
 
     updateDOM();
+  };
+
+  const stepInterval = setInterval(() => {
+    if (!lastStepTimestamp) {
+      lastStepTimestamp = Date.now();
+      step();
+    } else {
+      const stepCount = Math.round(
+        (Date.now() - lastStepTimestamp) / stepDurationMs
+      );
+      console.log(stepCount);
+      for (let _ = 0; _ < stepCount; _ += 1) {
+        step();
+      }
+      lastStepTimestamp = Date.now();
+    }
   }, 1000);
 
   const start = () => {
-    button.innerText = "End";
+    button.classList.add("pause");
+    repDashElements.forEach((elem) => elem.classList.remove("hidden"));
+    setDashElements.forEach((elem) => elem.classList.remove("hidden"));
     isActive = true;
     currentRep = 1;
     currentSet = 1;
@@ -117,8 +170,11 @@ const initStretch = () => {
   };
 
   const end = () => {
-    button.innerText = "Start";
+    button.classList.remove("pause");
+    repDashElements.forEach((elem) => elem.classList.add("hidden"));
+    setDashElements.forEach((elem) => elem.classList.add("hidden"));
     isActive = false;
+    isBreak = false;
     currentTime = repTimeS;
     currentStartTime = repTimeS;
     currentRep = maxRep;
