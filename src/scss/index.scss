@@ -15,12 +15,6 @@ $dash-font-size: 6vmin;
 $outer-circle-color: #2e2e2e;
 $stretch-background-color: rgb(63, 155, 101);
 
-@media (max-width: $small-device-width) {
-  $h2-offset: 0;
-  $button-size: 80px;
-  $dash-size: 40px;
-}
-
 @mixin absolute-centered {
   position: absolute;
   top: 50%;
@@ -290,7 +284,10 @@ h2 > a {
 
 #stretch-title {
   @include absolute-centered();
-  top: 30%;
+  margin-top: 0;
+  margin-bottom: 0;
+  transform: translateX(-50%)
+    translateY(calc(-#{$stretch-outer-circle-size} / 2 - 120%));
 }
 
 .stretch {
@@ -321,7 +318,7 @@ h2 > a {
     @include absolute-centered();
     border-radius: 10000px;
     background-color: $stretch-background-color;
-    transition: width 500ms ease-out, height 500ms ease-out;
+    transition: width 500ms ease-in-out, height 500ms ease-in-out;
   }
 
   &__text {
@@ -355,24 +352,25 @@ h2 > a {
   &__button {
     @include absolute-centered();
 
-    & > button {
+    #stretch-button {
       border: none;
       outline: none;
 
       border: 0;
       background: transparent;
       box-sizing: border-box;
-      width: 0;
+      width: $button-size;
       height: $button-size;
 
       border-color: transparent transparent transparent $outer-circle-color;
+
       transition: 100ms all ease;
-      transform: translateX(1vmin);
+      transform: translateX($button-size * 0.1);
       cursor: pointer;
 
       // play state
       border-style: solid;
-      border-width: $button-size * 0.6 0 $button-size * 0.6 $button-size;
+      border-width: $button-size * 0.5 0 $button-size * 0.5 $button-size;
 
       &.pause {
         border-style: double;
@@ -443,5 +441,17 @@ h2 > a {
       $item-size: $dash-size,
       $offset-deg: -72deg
     );
+  }
+}
+
+@media (max-width: $small-device-width) {
+  #stretch-title {
+    font-size: 36px;
+    word-break: break-all;
+    width: 90vw;
+  }
+
+  h2 {
+    margin-left: 0 !important;
   }
 }
