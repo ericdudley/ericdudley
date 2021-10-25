@@ -351,6 +351,9 @@ h2 > a {
 
   &__button {
     @include absolute-centered();
+    display: flex;
+    align-items: center;
+    flex-direction: column;
 
     #stretch-button {
       border: none;
@@ -380,6 +383,25 @@ h2 > a {
 
       &:hover {
         border-color: transparent transparent transparent #404040;
+      }
+    }
+
+    #stretch-stop-button {
+      display: none;
+      width: $button-size * 0.5;
+      height: $button-size * 0.5;
+      margin-top: $button-size * 0.1;
+      border: none;
+      background-color: $outer-circle-color;
+      transform: none;
+      cursor: pointer;
+
+      &.active {
+        display: block;
+      }
+
+      &.active:hover {
+        background-color: #404040;
       }
     }
   }
