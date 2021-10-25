@@ -10,6 +10,17 @@
     "lint:fix": "eslint src/**/*.{js,ts} --fix",
     "tsc": "tsc --watch"
   },
+  "lint-staged": {
+    "src/**/*": [
+      "npm run lint:fix",
+      "git add"
+    ]
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/ericdudley/ericdudley.git"
@@ -28,6 +39,7 @@
     "eslint-config-airbnb-base": "^14.2.1",
     "eslint-import-resolver-typescript": "^2.4.0",
     "eslint-plugin-import": "^2.24.0",
+    "husky": "^7.0.4",
     "parcel-bundler": "^1.12.5",
     "typescript": "^4.3.5"
   },
