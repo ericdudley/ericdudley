@@ -1,5 +1,5 @@
-import { Howl } from "howler";
-import stretchSoundsPath from "../audio/stretch_sounds.mp3";
+import { Howl } from 'howler';
+import stretchSoundsPath from '../audio/stretch_sounds.mp3';
 
 const beginTimeS = 15;
 const betweenSetTimeS = 15;
@@ -9,53 +9,52 @@ const maxSet = 3;
 const maxRep = 5;
 const stepDurationMs = 1000;
 type Sound =
-  | "session_started"
-  | "begin"
-  | "stop_switch_sides"
-  | "stop_rep_number"
-  | "completed"
-  | "1"
-  | "2"
-  | "3"
-  | "4"
-  | "5"
-  | "6"
-  | "7"
-  | "8"
-  | "9"
-  | "10"
-  | "stop_set_number"
-  | "starting_set_number"
-  | "in"
-  | "seconds"
-  | "session_paused"
-  | "session_resumed"
-  | "session_ended"
-  | "dont_give_up"
-  | "youre_doing_a_great_job";
+  | 'session_started'
+  | 'begin'
+  | 'stop_switch_sides'
+  | 'stop_rep_number'
+  | 'completed'
+  | '1'
+  | '2'
+  | '3'
+  | '4'
+  | '5'
+  | '6'
+  | '7'
+  | '8'
+  | '9'
+  | '10'
+  | 'stop_set_number'
+  | 'starting_set_number'
+  | 'in'
+  | 'seconds'
+  | 'session_paused'
+  | 'session_resumed'
+  | 'session_ended'
+  | 'dont_give_up'
+  | 'youre_doing_a_great_job';
 
-type Side = "L" | "R";
+type Side = 'L' | 'R';
 
 const initStretch = () => {
-  const title: HTMLButtonElement = document.querySelector("#stretch-title");
+  const title: HTMLButtonElement = document.querySelector('#stretch-title');
 
-  const button: HTMLButtonElement = document.querySelector("#stretch-button");
+  const button: HTMLButtonElement = document.querySelector('#stretch-button');
   const stopButton: HTMLButtonElement = document.querySelector(
-    "#stretch-stop-button"
+    '#stretch-stop-button',
   );
-  const timeElement: HTMLHeadingElement =
-    document.querySelector("#stretch-time");
+  const timeElement: HTMLHeadingElement = document.querySelector('#stretch-time');
   const innerElement: HTMLDivElement = document.querySelector(
-    "#stretch-inner-circle"
+    '#stretch-inner-circle',
   );
   const outerElement: HTMLDivElement = document.querySelector(
-    "#stretch-outer-circle"
+    '#stretch-outer-circle',
   );
   const repDashElements = document.querySelectorAll<HTMLDivElement>(
-    ".stretch__rep__dashes__dash"
+    '.stretch__rep__dashes__dash',
   );
   const setDashElements = document.querySelectorAll<HTMLDivElement>(
-    ".stretch__set__dashes__dash"
+    '.stretch__set__dashes__dash',
   );
 
   const soundTimes: Record<Sound, [number, number]> = {
@@ -84,7 +83,7 @@ const initStretch = () => {
     dont_give_up: [43247, 975],
     youre_doing_a_great_job: [44536, 1254],
   };
-  const positiveSounds: Sound[] = ["dont_give_up", "youre_doing_a_great_job"];
+  const positiveSounds: Sound[] = ['dont_give_up', 'youre_doing_a_great_job'];
   const soundPromises = {};
 
   const howl = new Howl({
@@ -98,12 +97,11 @@ const initStretch = () => {
     },
   });
 
-  const promisePlay = (sound: Sound): Promise<void> =>
-    new Promise((res, rej) => {
-      howl.stop();
-      const soundId = howl.play(sound);
-      soundPromises[soundId] = { res, rej };
-    });
+  const promisePlay = (sound: Sound): Promise<void> => new Promise((res, rej) => {
+    howl.stop();
+    const soundId = howl.play(sound);
+    soundPromises[soundId] = { res, rej };
+  });
 
   const say = (sounds: Sound[], isNestedCall = false) => {
     if (sounds.length === 0) {
@@ -111,7 +109,7 @@ const initStretch = () => {
     }
     if (!isNestedCall && Math.random() < 0.05) {
       sounds.push(
-        positiveSounds[Math.floor(Math.random() * positiveSounds.length)]
+        positiveSounds[Math.floor(Math.random() * positiveSounds.length)],
       );
     }
     const currentSound = sounds[0];
@@ -126,7 +124,7 @@ const initStretch = () => {
   let isPaused = false;
   let isBreak = false;
   let currentRep = 0;
-  let currentSide: Side = "R";
+  let currentSide: Side = 'R';
   let currentSet = 0;
   let currentTime = 0;
   let currentStartTime = 0;
@@ -136,37 +134,37 @@ const initStretch = () => {
   const updateDOM = () => {
     for (let i = 0; i < repDashElements.length; i += 1) {
       if (!isActive) {
-        repDashElements[i].dataset.status = "";
-        repDashElements[i].innerHTML = "";
+        repDashElements[i].dataset.status = '';
+        repDashElements[i].innerHTML = '';
       } else if (i + 1 < currentRep) {
-        repDashElements[i].dataset.status = "done";
-        repDashElements[i].innerHTML = "";
+        repDashElements[i].dataset.status = 'done';
+        repDashElements[i].innerHTML = '';
       } else if (i + 1 === currentRep) {
-        repDashElements[i].dataset.status = "active";
+        repDashElements[i].dataset.status = 'active';
         repDashElements[i].innerHTML = `<span>${currentSide}</span>`;
       } else {
         repDashElements[i].dataset.status = undefined;
-        repDashElements[i].innerHTML = "";
+        repDashElements[i].innerHTML = '';
       }
     }
 
     for (let i = 0; i < setDashElements.length; i += 1) {
       if (!isActive) {
-        setDashElements[i].dataset.status = "";
+        setDashElements[i].dataset.status = '';
       } else if (i + 1 < currentSet) {
-        setDashElements[i].dataset.status = "done";
+        setDashElements[i].dataset.status = 'done';
       } else if (i + 1 === currentSet) {
-        setDashElements[i].dataset.status = "active";
+        setDashElements[i].dataset.status = 'active';
       } else {
         setDashElements[i].dataset.status = undefined;
       }
     }
     timeElement.innerText = `${currentTime}s`;
     const progress = isActive
-      ? 50 +
-        50 *
-          ((isBreak ? currentTime : currentStartTime - currentTime) /
-            currentStartTime)
+      ? 50
+        + 50
+          * ((isBreak ? currentTime : currentStartTime - currentTime)
+            / currentStartTime)
       : 100;
 
     innerElement.style.width = `${progress}%`;
@@ -177,59 +175,59 @@ const initStretch = () => {
     if (startTimeout) {
       return;
     }
-    title.classList.add("hidden");
-    outerElement.dataset.status = "active";
-    button.classList.add("pause");
-    say(["session_started"]);
+    title.classList.add('hidden');
+    outerElement.dataset.status = 'active';
+    button.classList.add('pause');
+    say(['session_started']);
     startTimeout = setTimeout(() => {
-      repDashElements.forEach((elem) => elem.classList.remove("hidden"));
-      setDashElements.forEach((elem) => elem.classList.remove("hidden"));
+      repDashElements.forEach((elem) => elem.classList.remove('hidden'));
+      setDashElements.forEach((elem) => elem.classList.remove('hidden'));
       isActive = true;
       isPaused = false;
       currentRep = 1;
       currentSet = 1;
       currentTime = beginTimeS;
       currentStartTime = beginTimeS;
-      currentSide = "R";
+      currentSide = 'R';
       isBreak = true;
       updateDOM();
     }, 1000);
   };
 
   const pause = () => {
-    button.classList.remove("pause");
-    stopButton.classList.add("active");
+    button.classList.remove('pause');
+    stopButton.classList.add('active');
 
-    say(["session_paused"]);
+    say(['session_paused']);
     isPaused = true;
   };
 
   const resume = () => {
-    button.classList.add("pause");
-    stopButton.classList.remove("active");
-    say(["session_resumed"]);
+    button.classList.add('pause');
+    stopButton.classList.remove('active');
+    say(['session_resumed']);
     isPaused = false;
   };
 
   const end = () => {
     clearTimeout(startTimeout);
     startTimeout = undefined;
-    button.classList.remove("pause");
-    title.classList.remove("hidden");
-    stopButton.classList.remove("active");
+    button.classList.remove('pause');
+    title.classList.remove('hidden');
+    stopButton.classList.remove('active');
 
-    outerElement.dataset.status = "";
-    repDashElements.forEach((elem) => elem.classList.add("hidden"));
-    setDashElements.forEach((elem) => elem.classList.add("hidden"));
+    outerElement.dataset.status = '';
+    repDashElements.forEach((elem) => elem.classList.add('hidden'));
+    setDashElements.forEach((elem) => elem.classList.add('hidden'));
     isActive = false;
     isBreak = false;
     currentTime = repTimeS;
     currentStartTime = repTimeS;
     currentRep = maxRep;
     currentSet = maxSet;
-    currentSide = "R";
+    currentSide = 'R';
     updateDOM();
-    say(["session_ended"]);
+    say(['session_ended']);
   };
 
   const step = () => {
@@ -244,18 +242,18 @@ const initStretch = () => {
         isBreak = false;
         currentTime = repTimeS;
         currentStartTime = repTimeS;
-        say(["begin"]);
+        say(['begin']);
       }
     } else if (currentTime === 0) {
-      if (currentSide === "R") {
-        currentSide = "L";
+      if (currentSide === 'R') {
+        currentSide = 'L';
         currentTime = breakTimeS;
         currentStartTime = breakTimeS;
         isBreak = true;
-        say(["stop_switch_sides"]);
+        say(['stop_switch_sides']);
       } else {
         currentRep += 1;
-        currentSide = "R";
+        currentSide = 'R';
 
         if (currentRep === maxRep + 1) {
           currentRep = 1;
@@ -264,23 +262,23 @@ const initStretch = () => {
           currentStartTime = betweenSetTimeS;
           isBreak = true;
           say([
-            "stop_set_number",
+            'stop_set_number',
             String(currentSet - 1) as Sound,
-            "completed",
-            "starting_set_number",
+            'completed',
+            'starting_set_number',
             String(currentSet) as Sound,
-            "in",
-            "10",
-            "seconds",
+            'in',
+            '10',
+            'seconds',
           ]);
         } else {
           currentTime = breakTimeS;
           currentStartTime = breakTimeS;
           isBreak = true;
           say([
-            "stop_rep_number",
+            'stop_rep_number',
             String(currentRep - 1) as Sound,
-            "completed",
+            'completed',
           ]);
         }
 
@@ -299,7 +297,7 @@ const initStretch = () => {
       step();
     } else {
       const stepCount = Math.round(
-        (Date.now() - lastStepTimestamp) / stepDurationMs
+        (Date.now() - lastStepTimestamp) / stepDurationMs,
       );
       for (let _ = 0; _ < stepCount; _ += 1) {
         step();
@@ -326,10 +324,10 @@ const initStretch = () => {
     e.preventDefault();
   };
 
-  button.addEventListener("click", onButtonClick);
-  button.addEventListener("touchstart", onButtonClick);
-  stopButton.addEventListener("click", onStopButtonClick);
-  stopButton.addEventListener("touchstart", onStopButtonClick);
+  button.addEventListener('click', onButtonClick);
+  button.addEventListener('touchstart', onButtonClick);
+  stopButton.addEventListener('click', onStopButtonClick);
+  stopButton.addEventListener('touchstart', onStopButtonClick);
 };
 
 export default initStretch;
