@@ -43,6 +43,9 @@ const initStretch = () => {
   const stopButton: HTMLButtonElement = document.querySelector(
     '#stretch-stop-button',
   );
+  const optionsButton: HTMLButtonElement = document.querySelector(
+    '#stretch-options-button',
+  );
   const timeElement: HTMLHeadingElement = document.querySelector('#stretch-time');
   const innerElement: HTMLDivElement = document.querySelector(
     '#stretch-inner-circle',
@@ -123,6 +126,7 @@ const initStretch = () => {
   let isActive = false;
   let isPaused = false;
   let isBreak = false;
+  let isOptions = false;
   let currentRep = 0;
   let currentSide: Side = 'R';
   let currentSet = 0;
@@ -324,10 +328,49 @@ const initStretch = () => {
     e.preventDefault();
   };
 
+  const onOptionsButtonClick = (e: MouseEvent) => {
+    if (isOptions) {
+      isOptions = false;
+      innerElement.classList.remove('expanded');
+      button.classList.remove('hidden');
+      innerElement.innerHTML = '';
+    } else {
+      isOptions = true;
+      innerElement.classList.add('expanded');
+      button.classList.add('hidden');
+      innerElement.innerHTML = `
+        <div>
+          <div>
+            <h3>Set 1</h3>
+            <input type="number"></input>
+            <input type="number"></input>
+            <input type="number"></input>
+          </div>
+          <div>
+            <h3>Set 2</h3>
+            <input type="number"></input>
+            <input type="number"></input>
+            <input type="number"></input>
+          </div>
+          <div>
+            <h3>Set 3</h3>
+            <input type="number"></input>
+            <input type="number"></input>
+            <input type="number"></input>
+          </div>
+        </div>
+      `;
+    }
+
+    e.preventDefault();
+  };
+
   button.addEventListener('click', onButtonClick);
   button.addEventListener('touchstart', onButtonClick);
   stopButton.addEventListener('click', onStopButtonClick);
   stopButton.addEventListener('touchstart', onStopButtonClick);
+  optionsButton.addEventListener('click', onOptionsButtonClick);
+  optionsButton.addEventListener('touchstart', onOptionsButtonClick);
 };
 
 export default initStretch;

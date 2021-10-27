@@ -316,9 +316,17 @@ h2 > a {
     width: 100%;
     height: 100%;
     @include absolute-centered();
-    border-radius: 10000px;
+    border-radius: 50%;
     background-color: $stretch-background-color;
-    transition: width 500ms ease-in-out, height 500ms ease-in-out;
+    transition: width 500ms ease-in-out, height 500ms ease-in-out,
+      border-radius 500ms ease-in-out;
+
+    &.expanded {
+      padding: 16px;
+      border-radius: 16px;
+      width: min(800px, 80vw);
+      height: fit-content;
+    }
   }
 
   &__text {
@@ -383,6 +391,23 @@ h2 > a {
 
       &:hover {
         border-color: transparent transparent transparent #404040;
+      }
+    }
+
+    #stretch-options-button {
+      width: $button-size * 0.5;
+      height: $button-size * 0.5;
+      margin-top: $button-size * 0.5;
+      border: none;
+      transform: none;
+      cursor: pointer;
+
+      &.active {
+        display: block;
+      }
+
+      &.active:hover {
+        opacity: 0.8;
       }
     }
 

@@ -11,8 +11,8 @@
     "tsc": "tsc --watch"
   },
   "lint-staged": {
-    "src/**/*": [
-      "npm run lint:fix",
+    "*.{js,ts}": [
+      "eslint src/**/*.{js,ts} --fix",
       "git add"
     ]
   },
