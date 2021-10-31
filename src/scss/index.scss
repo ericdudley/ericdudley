@@ -308,7 +308,7 @@ h2 > a {
       min-height: $stretch-outer-circle-size;
       height: fit-content;
       max-height: 90vh;
-      overflow-y: scroll;
+      overflow-y: auto;
     }
   }
 

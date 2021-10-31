@@ -326,19 +326,27 @@ const initStretch = () => {
     e.preventDefault();
   };
 
-  const { openStretchForm, closeStretchForm } = initializeStretchForm(innerElement);
+  const closeOptions = () => {
+    isOptions = false;
+    title.classList.remove('hidden');
+    innerElement.classList.remove('expanded');
+    stretchContentElement.classList.remove('hidden');
+    closeStretchForm();
+  };
+
+  const { openStretchForm, closeStretchForm } = initializeStretchForm(
+    innerElement,
+    closeOptions,
+  );
 
   const onOptionsButtonClick = (e: MouseEvent) => {
     if (isOptions) {
-      isOptions = false;
-      innerElement.classList.remove('expanded');
-      stretchContentElement.classList.remove('hidden');
-      closeStretchForm();
+      closeOptions();
     } else {
       isOptions = true;
+      title.classList.add('hidden');
       innerElement.classList.add('expanded');
       stretchContentElement.classList.add('hidden');
-
       openStretchForm();
     }
 

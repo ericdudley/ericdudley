@@ -1,8 +1,28 @@
 import { loadOptions, saveOptions } from './stretchConfig';
 
-export const initializeStretchForm = (container: HTMLDivElement) => {
+export const initializeStretchForm = (
+  container: HTMLDivElement,
+  onClose: () => void,
+) => {
   let options = loadOptions();
   let openTimeout;
+
+  const open = () => {
+    if (openTimeout) {
+      return;
+    }
+    openTimeout = setTimeout(() => {
+      updateDOM();
+      openTimeout = null;
+    }, 250);
+  };
+
+  const close = () => {
+    clearTimeout(openTimeout);
+    openTimeout = null;
+    saveOptions(options);
+    container.innerHTML = '';
+  };
 
   const updateOptions = () => {
     options = loadOptions();
@@ -31,6 +51,10 @@ export const initializeStretchForm = (container: HTMLDivElement) => {
       const reps = document.createElement('input');
       reps.type = 'number';
       reps.value = sets[i].reps.toString();
+      reps.addEventListener('change', () => {
+        sets[i].reps = parseInt(reps.value, 10);
+        saveOptions(options);
+      });
       form.appendChild(reps);
 
       const repsDurationLabel = document.createElement('label');
@@ -39,6 +63,13 @@ export const initializeStretchForm = (container: HTMLDivElement) => {
       const repDuration = document.createElement('input');
       repDuration.type = 'number';
       repDuration.value = sets[i].repDuration.toString();
+      repDuration.addEventListener('change', () => {
+        options.routines[0].sets[i].repDuration = parseInt(
+          repDuration.value,
+          10,
+        );
+        saveOptions(options);
+      });
       form.appendChild(repDuration);
 
       const switchSidesLabel = document.createElement('label');
@@ -47,10 +78,30 @@ export const initializeStretchForm = (container: HTMLDivElement) => {
       const switchSides = document.createElement('input');
       switchSides.type = 'checkbox';
       switchSides.checked = sets[i].switchSides;
+      switchSides.addEventListener('change', () => {
+        sets[i].switchSides = switchSides.checked;
+        saveOptions(options);
+      });
       form.appendChild(switchSides);
+
+      const removeButton = document.createElement('button');
+      removeButton.innerText = 'Remove Set';
+      removeButton.addEventListener('click', () => {
+        sets.splice(i, 1);
+        saveOptions(options);
+        updateDOM();
+      });
+      form.appendChild(removeButton);
 
       container.appendChild(form);
     }
+
+    const closeButton = document.createElement('button');
+    closeButton.innerText = 'Close';
+    closeButton.addEventListener('click', () => {
+      onClose();
+    });
+    container.appendChild(closeButton);
 
     const newButton = document.createElement('button');
     newButton.innerText = 'Add set';
@@ -67,23 +118,6 @@ export const initializeStretchForm = (container: HTMLDivElement) => {
     });
     saveOptions(options);
     updateDOM();
-  };
-
-  const open = () => {
-    if (openTimeout) {
-      return;
-    }
-    openTimeout = setTimeout(() => {
-      updateDOM();
-      openTimeout = null;
-    }, 250);
-  };
-
-  const close = () => {
-    clearTimeout(openTimeout);
-    openTimeout = null;
-    saveOptions(options);
-    container.innerHTML = '';
   };
 
   return { openStretchForm: open, closeStretchForm: close };
