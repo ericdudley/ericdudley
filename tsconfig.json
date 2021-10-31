@@ -5,7 +5,7 @@
     "paths": {
       "~*": ["./*"]
     },
-    "target": "ES6",
+    "target": "ES2015",
     "moduleResolution": "Node"
   },
   "include": ["src/**/*"]
