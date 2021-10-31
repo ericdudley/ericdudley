@@ -1,8 +1,13 @@
+/**
+ * This file contains the logic for populating the options
+ * form within the Stretch page. initStretchForm() should be called
+ *  in order to bootstrap the form and set up event listeners.
+ */
 import { loadOptions, saveOptions } from './stretchConfig';
 
 const MAX_SETS = 5;
 
-export const initializeStretchForm = (
+export const initStretchForm = (
   container: HTMLDivElement,
   onClose: () => void,
 ) => {
@@ -90,7 +95,7 @@ export const initializeStretchForm = (
 
       const removeButton = document.createElement('button');
       removeButton.innerText = 'Remove Set';
-      removeButton.classList.add('stretch-options-button');
+      removeButton.classList.add('stretch-options-form-button');
       removeButton.addEventListener('click', () => {
         sets.splice(i, 1);
         saveOptions(options);
@@ -104,12 +109,12 @@ export const initializeStretchForm = (
     }
 
     const buttonContainer = document.createElement('div');
-    buttonContainer.classList.add('stretch-options-button-container');
+    buttonContainer.classList.add('stretch-options-form-button-container');
     container.appendChild(buttonContainer);
 
     const closeButton = document.createElement('button');
     closeButton.innerText = 'Close';
-    closeButton.classList.add('stretch-options-button');
+    closeButton.classList.add('stretch-options-form-button');
     closeButton.addEventListener('click', () => {
       onClose();
     });
@@ -117,7 +122,7 @@ export const initializeStretchForm = (
 
     const newButton = document.createElement('button');
     newButton.innerText = 'Add set +';
-    newButton.classList.add('stretch-options-button');
+    newButton.classList.add('stretch-options-form-button');
     newButton.addEventListener('click', () => {
       updateOptions();
       options.routines[0].sets.push({

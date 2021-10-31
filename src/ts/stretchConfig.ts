@@ -1,3 +1,10 @@
+/**
+ * This file contains the logic for saving and loading the configuration
+ * object for the Stretch page using the browser's local storage API.
+ *
+ * All operations are synchronous and, the configuration object is
+ * guaranteed to have a default value, if the user does not already have one.
+ */
 const LOCAL_STORAGE_KEY = 'stretch-options';
 export interface StretchSet {
   reps: number;

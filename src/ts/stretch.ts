@@ -1,7 +1,12 @@
+/**
+ * This file contains the logic for the Stretch page.
+ * initStretch should be called to bootstrap the interactivity of the page.
+ */
+
 import { Howl } from 'howler';
 import stretchSoundsPath from '../audio/stretch_sounds.mp3';
 import { loadOptions, StretchRoutine } from './stretchConfig';
-import { initializeStretchForm } from './stretchForm';
+import { initStretchForm } from './stretchForm';
 
 const beginTimeS = 13;
 const betweenSetTimeS = 15;
@@ -38,7 +43,9 @@ type Sound =
 
 type Side = 'L' | 'R';
 
+// Sets up the state and event listeners for the Stretch page
 const initStretch = () => {
+  // DOM element references
   let title: HTMLButtonElement;
   let button: HTMLButtonElement;
   let stopButton: HTMLButtonElement;
@@ -51,6 +58,10 @@ const initStretch = () => {
   let setDashesContainerElement: HTMLDivElement;
   let setDashElements: HTMLDivElement[];
 
+  /**
+   * Update all of the DOM element references in case the elements were
+   * replaced since the last time.
+   */
   const updateElementRefs = () => {
     title = document.querySelector('#stretch-title');
 
@@ -75,6 +86,10 @@ const initStretch = () => {
   };
   updateElementRefs();
 
+  /**
+   * Adjust the style of an element and its children to place the children
+   * tangentially around the element with a given radius of circleSize / 2.
+   */
   const setElementChildrenOnCircle = (
     element: HTMLDivElement,
     itemCount: number,
@@ -104,6 +119,10 @@ const initStretch = () => {
     }
   };
 
+  /**
+   * Check if the current routine's set count and current set's rep count match what is in the
+   * DOM, if not, replace all of the elements with the correct number of elements.
+   */
   const updateDashElements = () => {
     const newMaxSets = routine.sets.length;
     const newMaxReps = routine.sets[currentSet - 1]?.reps || 0;
@@ -202,6 +221,7 @@ const initStretch = () => {
     });
   };
 
+  // Application state
   let isActive = false;
   let isPaused = false;
   let isBreak = false;
@@ -215,14 +235,16 @@ const initStretch = () => {
   let startTimeout;
   let routine: StretchRoutine;
 
+  // Helpers to get the current routine/set's configuration
   const getMaxReps = () => routine.sets[currentSet - 1].reps ?? 0;
-
   const getMaxSets = () => routine.sets.length ?? 0;
-
   const getRepDuration = () => routine.sets[currentSet - 1]?.repDuration ?? 0;
-
   const getSwitchSides = () => routine.sets[currentSet - 1]?.switchSides ?? 0;
 
+  /**
+   * Update the DOM with the latest application state,
+   * should be called whenever the application state changes.
+   */
   const updateDOM = () => {
     updateElementRefs();
 
@@ -266,6 +288,7 @@ const initStretch = () => {
     innerElement.style.height = `${progress}%`;
   };
 
+  // Start a session, hiding/showing elements, and setting isActive to true.
   const start = () => {
     if (startTimeout) {
       return;
@@ -292,6 +315,10 @@ const initStretch = () => {
     }, 1000);
   };
 
+  /**
+   * Pause a session, do not reset any state,
+   * just stop step() from continuing the session.
+   */
   const pause = () => {
     button.classList.remove('pause');
     stopButton.classList.add('active');
@@ -300,6 +327,7 @@ const initStretch = () => {
     isPaused = true;
   };
 
+  // Resume a session, do not reset any state, just allow step() to continue the session.
   const resume = () => {
     button.classList.add('pause');
     stopButton.classList.remove('active');
@@ -307,6 +335,7 @@ const initStretch = () => {
     isPaused = false;
   };
 
+  // End a session, reset all state, and hide/show elements.
   const end = () => {
     clearTimeout(startTimeout);
     startTimeout = undefined;
@@ -329,6 +358,10 @@ const initStretch = () => {
     say(['session_ended']);
   };
 
+  /**
+   * Function that contains the session's application logic for updating
+   * the current set, rep, and time. Should be called every second.
+   */
   const step = () => {
     if (!isActive || isPaused) {
       return;
@@ -391,6 +424,10 @@ const initStretch = () => {
     updateDOM();
   };
 
+  /**
+   * Set up the interval that calls step() every second. Accounts for imperfect timing.
+   * This interval is started on page dage, but is a noop if the session is not active or paused.
+   */
   setInterval(() => {
     if (!lastStepTimestamp) {
       lastStepTimestamp = Date.now();
@@ -406,6 +443,7 @@ const initStretch = () => {
     }
   }, 1000);
 
+  // Event listener for the center "play/pause" button.
   const onButtonClick = (e: MouseEvent) => {
     if (isActive) {
       if (isPaused) {
@@ -419,11 +457,13 @@ const initStretch = () => {
     e.preventDefault();
   };
 
+  // Event listener for the smaller "stop" square button.
   const onStopButtonClick = (e: MouseEvent) => {
     end();
     e.preventDefault();
   };
 
+  // Closes the options modal and returns the UI to the original state.
   const closeOptions = () => {
     isOptions = false;
     title.classList.remove('hidden');
@@ -432,11 +472,13 @@ const initStretch = () => {
     closeStretchForm();
   };
 
-  const { openStretchForm, closeStretchForm } = initializeStretchForm(
+  // Set up the options form, and pass in a callback for an internal "close".
+  const { openStretchForm, closeStretchForm } = initStretchForm(
     innerElement,
     closeOptions,
   );
 
+  // Event listener for the cog button in the upper right.
   const onOptionsButtonClick = (e: MouseEvent) => {
     if (isOptions) {
       closeOptions();
@@ -451,6 +493,7 @@ const initStretch = () => {
     e.preventDefault();
   };
 
+  // Set up event listeners for all buttons, make sure they will work across desktop and mobile.
   button.addEventListener('click', onButtonClick);
   button.addEventListener('touchstart', onButtonClick);
   stopButton.addEventListener('click', onStopButtonClick);
