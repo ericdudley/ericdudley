@@ -245,30 +245,6 @@ h2 > a {
   width: 300px;
 }
 
-@media (max-width: $small-device-width) {
-  h2 {
-    font-size: 1.5em;
-  }
-
-  h2 > a {
-    font-size: 2em;
-  }
-
-  #about-me-page {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
-
-  #food-container {
-    margin-right: 0;
-  }
-
-  #food {
-    width: 200px;
-  }
-}
-
 /* Stretch Page */
 
 @keyframes grow {
@@ -296,6 +272,10 @@ h2 > a {
   @include absolute-centered();
   border-radius: 10000px;
 
+  &.hidden {
+    display: none;
+  }
+
   &-outer-circle {
     width: $stretch-outer-circle-size;
     height: $stretch-outer-circle-size;
@@ -318,14 +298,17 @@ h2 > a {
     @include absolute-centered();
     border-radius: 50%;
     background-color: $stretch-background-color;
-    transition: width 500ms ease-in-out, height 500ms ease-in-out,
-      border-radius 500ms ease-in-out;
+    transition: width 250ms ease-in-out, height 250ms ease-in-out,
+      border-radius 250ms ease-in-out;
 
     &.expanded {
       padding: 16px;
       border-radius: 16px;
       width: min(800px, 80vw);
+      min-height: $stretch-outer-circle-size;
       height: fit-content;
+      max-height: 90vh;
+      overflow-y: scroll;
     }
   }
 
@@ -391,23 +374,6 @@ h2 > a {
 
       &:hover {
         border-color: transparent transparent transparent #404040;
-      }
-    }
-
-    #stretch-options-button {
-      width: $button-size * 0.5;
-      height: $button-size * 0.5;
-      margin-top: $button-size * 0.5;
-      border: none;
-      transform: none;
-      cursor: pointer;
-
-      &.active {
-        display: block;
-      }
-
-      &.active:hover {
-        opacity: 0.8;
       }
     }
 
@@ -491,6 +457,39 @@ h2 > a {
   }
 }
 
+#stretch-options {
+  @include absolute-centered();
+}
+
+#stretch-options-button {
+  position: absolute;
+  right: $button-size * 0.25;
+  top: $button-size * 0.25;
+  width: $button-size * 0.5;
+  height: $button-size * 0.5;
+  border: none;
+  transform: none;
+  cursor: pointer;
+
+  &.active {
+    display: block;
+  }
+
+  &.active:hover {
+    opacity: 0.8;
+  }
+}
+
+.stretch-options-set-form {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+
+  & > label {
+    margin-left: 8px;
+  }
+}
+
 @media (max-width: $small-device-width) {
   #stretch-title {
     font-size: 36px;
@@ -499,6 +498,42 @@ h2 > a {
   }
 
   h2 {
+    font-size: 1.5em;
     margin-left: 0 !important;
+  }
+
+  h2 > a {
+    font-size: 2em;
+  }
+
+  #about-me-page {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  #food-container {
+    margin-right: 0;
+  }
+
+  #food {
+    width: 200px;
+  }
+
+  #stretch-options-button {
+    width: $button-size;
+    height: $button-size;
+  }
+
+  .stretch-options-set-form {
+    display: flex;
+    align-items: flex-start;
+    flex-direction: column;
+    flex-wrap: wrap;
+
+    & > label {
+      margin-left: 0px;
+      margin-top: 8px;
+    }
   }
 }

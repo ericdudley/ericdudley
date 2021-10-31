@@ -1,5 +1,6 @@
 import { Howl } from 'howler';
 import stretchSoundsPath from '../audio/stretch_sounds.mp3';
+import { initializeStretchForm } from './stretchForm';
 
 const beginTimeS = 15;
 const betweenSetTimeS = 15;
@@ -46,13 +47,13 @@ const initStretch = () => {
   const optionsButton: HTMLButtonElement = document.querySelector(
     '#stretch-options-button',
   );
-  const timeElement: HTMLHeadingElement = document.querySelector('#stretch-time');
   const innerElement: HTMLDivElement = document.querySelector(
     '#stretch-inner-circle',
   );
   const outerElement: HTMLDivElement = document.querySelector(
     '#stretch-outer-circle',
   );
+  const stretchContentElement: HTMLDivElement = document.querySelector('.stretch');
   const repDashElements = document.querySelectorAll<HTMLDivElement>(
     '.stretch__rep__dashes__dash',
   );
@@ -121,8 +122,6 @@ const initStretch = () => {
     });
   };
 
-  timeElement.innerText = `${repTimeS}s`;
-
   let isActive = false;
   let isPaused = false;
   let isBreak = false;
@@ -163,7 +162,6 @@ const initStretch = () => {
         setDashElements[i].dataset.status = undefined;
       }
     }
-    timeElement.innerText = `${currentTime}s`;
     const progress = isActive
       ? 50
         + 50
@@ -328,42 +326,26 @@ const initStretch = () => {
     e.preventDefault();
   };
 
+  const { openStretchForm, closeStretchForm } = initializeStretchForm(innerElement);
+
   const onOptionsButtonClick = (e: MouseEvent) => {
     if (isOptions) {
       isOptions = false;
       innerElement.classList.remove('expanded');
-      button.classList.remove('hidden');
-      innerElement.innerHTML = '';
+      stretchContentElement.classList.remove('hidden');
+      closeStretchForm();
     } else {
       isOptions = true;
       innerElement.classList.add('expanded');
-      button.classList.add('hidden');
-      innerElement.innerHTML = `
-        <div>
-          <div>
-            <h3>Set 1</h3>
-            <input type="number"></input>
-            <input type="number"></input>
-            <input type="number"></input>
-          </div>
-          <div>
-            <h3>Set 2</h3>
-            <input type="number"></input>
-            <input type="number"></input>
-            <input type="number"></input>
-          </div>
-          <div>
-            <h3>Set 3</h3>
-            <input type="number"></input>
-            <input type="number"></input>
-            <input type="number"></input>
-          </div>
-        </div>
-      `;
+      stretchContentElement.classList.add('hidden');
+
+      openStretchForm();
     }
 
     e.preventDefault();
   };
+
+  onOptionsButtonClick(new MouseEvent('click'));
 
   button.addEventListener('click', onButtonClick);
   button.addEventListener('touchstart', onButtonClick);
