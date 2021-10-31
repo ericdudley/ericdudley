@@ -66,7 +66,7 @@ export const initStretchForm = (
       form.appendChild(reps);
 
       const repsDurationLabel = document.createElement('label');
-      repsDurationLabel.innerText = 'Rep Duration';
+      repsDurationLabel.innerText = 'Rep Duration (s)';
       form.appendChild(repsDurationLabel);
       const repDuration = document.createElement('input');
       repDuration.type = 'number';
