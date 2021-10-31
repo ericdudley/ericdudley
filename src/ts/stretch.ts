@@ -404,7 +404,7 @@ const initStretch = () => {
       }
       lastStepTimestamp = Date.now();
     }
-  }, 500);
+  }, 1000);
 
   const onButtonClick = (e: MouseEvent) => {
     if (isActive) {
@@ -450,8 +450,6 @@ const initStretch = () => {
 
     e.preventDefault();
   };
-
-  start();
 
   button.addEventListener('click', onButtonClick);
   button.addEventListener('touchstart', onButtonClick);

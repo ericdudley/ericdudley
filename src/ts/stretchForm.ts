@@ -53,6 +53,7 @@ export const initializeStretchForm = (
       const reps = document.createElement('input');
       reps.type = 'number';
       reps.value = sets[i].reps.toString();
+      reps.classList.add('stretch-options-input');
       reps.addEventListener('change', () => {
         sets[i].reps = parseInt(reps.value, 10);
         saveOptions(options);
@@ -65,6 +66,7 @@ export const initializeStretchForm = (
       const repDuration = document.createElement('input');
       repDuration.type = 'number';
       repDuration.value = sets[i].repDuration.toString();
+      repDuration.classList.add('stretch-options-input');
       repDuration.addEventListener('change', () => {
         options.routines[0].sets[i].repDuration = parseInt(
           repDuration.value,
@@ -88,6 +90,7 @@ export const initializeStretchForm = (
 
       const removeButton = document.createElement('button');
       removeButton.innerText = 'Remove Set';
+      removeButton.classList.add('stretch-options-button');
       removeButton.addEventListener('click', () => {
         sets.splice(i, 1);
         saveOptions(options);
@@ -100,15 +103,21 @@ export const initializeStretchForm = (
       container.appendChild(form);
     }
 
+    const buttonContainer = document.createElement('div');
+    buttonContainer.classList.add('stretch-options-button-container');
+    container.appendChild(buttonContainer);
+
     const closeButton = document.createElement('button');
     closeButton.innerText = 'Close';
+    closeButton.classList.add('stretch-options-button');
     closeButton.addEventListener('click', () => {
       onClose();
     });
-    container.appendChild(closeButton);
+    buttonContainer.appendChild(closeButton);
 
     const newButton = document.createElement('button');
-    newButton.innerText = 'Add set';
+    newButton.innerText = 'Add set +';
+    newButton.classList.add('stretch-options-button');
     newButton.addEventListener('click', () => {
       updateOptions();
       options.routines[0].sets.push({
@@ -123,7 +132,7 @@ export const initializeStretchForm = (
     if (options.routines[0].sets.length >= MAX_SETS) {
       newButton.disabled = true;
     }
-    container.appendChild(newButton);
+    buttonContainer.appendChild(newButton);
   };
 
   return { openStretchForm: open, closeStretchForm: close };

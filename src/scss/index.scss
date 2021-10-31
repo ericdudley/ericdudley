@@ -4,7 +4,7 @@
 /* Whole Page Styles */
 $h2-offset: math.div(100vw, 20);
 $full-dim: 100vmax * 1.25;
-$small-device-width: 575.98px;
+$small-device-width: 769px;
 $stretch-outer-circle-active-size: 90vmin;
 $stretch-outer-circle-size: 30vmin;
 $button-size: 10vmin;
@@ -441,10 +441,6 @@ h2 > a {
   }
 }
 
-#stretch-options {
-  @include absolute-centered();
-}
-
 #stretch-options-button {
   position: absolute;
   right: $button-size * 0.25;
@@ -472,6 +468,31 @@ h2 > a {
   & > label {
     margin-left: 8px;
   }
+}
+
+.stretch-options-button {
+  margin: 8px;
+  outline: rgb(255, 255, 255) solid 2px;
+  background: transparent;
+  border: none;
+  color: white;
+  border-radius: 8px;
+  padding: 8px;
+  cursor: pointer;
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.2);
+  }
+}
+
+.stretch-options-input {
+  border-radius: 4px;
+  border: solid white 2px;
+  margin: 8px;
+}
+
+.stretch-options-button-container {
+  margin-top: 24px;
 }
 
 @media (max-width: $small-device-width) {
@@ -519,5 +540,10 @@ h2 > a {
       margin-left: 0px;
       margin-top: 8px;
     }
+  }
+
+  .stretch-options-input {
+    margin-left: 0;
+    margin-right: 0;
   }
 }
