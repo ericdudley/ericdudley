@@ -1,8 +1,9 @@
 import { Howl } from 'howler';
 import stretchSoundsPath from '../audio/stretch_sounds.mp3';
+import { loadOptions, StretchRoutine } from './stretchConfig';
 import { initializeStretchForm } from './stretchForm';
 
-const beginTimeS = 15;
+const beginTimeS = 13;
 const betweenSetTimeS = 15;
 const breakTimeS = 7;
 const repTimeS = 30;
@@ -38,28 +39,107 @@ type Sound =
 type Side = 'L' | 'R';
 
 const initStretch = () => {
-  const title: HTMLButtonElement = document.querySelector('#stretch-title');
+  let title: HTMLButtonElement;
+  let button: HTMLButtonElement;
+  let stopButton: HTMLButtonElement;
+  let optionsButton: HTMLButtonElement;
+  let innerElement: HTMLDivElement;
+  let outerElement: HTMLDivElement;
+  let stretchContentElement: HTMLDivElement;
+  let repDashesContainerElement: HTMLDivElement;
+  let repDashElements: HTMLDivElement[];
+  let setDashesContainerElement: HTMLDivElement;
+  let setDashElements: HTMLDivElement[];
 
-  const button: HTMLButtonElement = document.querySelector('#stretch-button');
-  const stopButton: HTMLButtonElement = document.querySelector(
-    '#stretch-stop-button',
-  );
-  const optionsButton: HTMLButtonElement = document.querySelector(
-    '#stretch-options-button',
-  );
-  const innerElement: HTMLDivElement = document.querySelector(
-    '#stretch-inner-circle',
-  );
-  const outerElement: HTMLDivElement = document.querySelector(
-    '#stretch-outer-circle',
-  );
-  const stretchContentElement: HTMLDivElement = document.querySelector('.stretch');
-  const repDashElements = document.querySelectorAll<HTMLDivElement>(
-    '.stretch__rep__dashes__dash',
-  );
-  const setDashElements = document.querySelectorAll<HTMLDivElement>(
-    '.stretch__set__dashes__dash',
-  );
+  const updateElementRefs = () => {
+    title = document.querySelector('#stretch-title');
+
+    button = document.querySelector('#stretch-button');
+    stopButton = document.querySelector('#stretch-stop-button');
+    optionsButton = document.querySelector('#stretch-options-button');
+    innerElement = document.querySelector('#stretch-inner-circle');
+    outerElement = document.querySelector('#stretch-outer-circle');
+    stretchContentElement = document.querySelector('.stretch');
+    repDashesContainerElement = document.querySelector(
+      '#stretch-rep-dashes-container',
+    );
+    repDashElements = Array.from(
+      document.querySelectorAll<HTMLDivElement>('.stretch__rep__dashes__dash'),
+    );
+    setDashesContainerElement = document.querySelector(
+      '#stretch-set-dashes-container',
+    );
+    setDashElements = Array.from(
+      document.querySelectorAll<HTMLDivElement>('.stretch__set__dashes__dash'),
+    );
+  };
+  updateElementRefs();
+
+  const setElementChildrenOnCircle = (
+    element: HTMLDivElement,
+    itemCount: number,
+    circleSize: string,
+    offsetDeg: number,
+  ) => {
+    element.style.width = circleSize;
+    element.style.height = circleSize;
+    element.style.padding = '0';
+    element.style.borderRadius = '50%';
+    element.style.listStyle = 'none';
+
+    const angle = 180 / itemCount;
+    let rot = offsetDeg + (angle * 0.5 + 90);
+    for (let i = 0; i < element.children.length; i += 1) {
+      const child = element.children[i] as HTMLDivElement;
+      child.style.display = 'block';
+      child.style.position = 'absolute';
+      child.style.top = '50%';
+      child.style.left = '50%';
+      child.style.transformOrigin = 'center';
+      child.style.transform = `translateX(-50%)
+      translateY(-50%)
+      rotate(${rot}deg)
+      translate(${circleSize})`;
+      rot += angle;
+    }
+  };
+
+  const updateDashElements = () => {
+    const newMaxSets = routine.sets.length;
+    const newMaxReps = routine.sets[currentSet - 1]?.reps || 0;
+
+    if (newMaxSets !== setDashesContainerElement.children.length) {
+      setDashesContainerElement.innerHTML = '';
+      for (let i = 0; i < newMaxSets; i += 1) {
+        const dash = document.createElement('div');
+        dash.classList.add('stretch__set__dashes__dash');
+        dash.classList.add('stretch__dashes__dash');
+        setDashesContainerElement.appendChild(dash);
+      }
+      setElementChildrenOnCircle(
+        setDashesContainerElement,
+        newMaxSets,
+        '18vmin',
+        0,
+      );
+    }
+    if (newMaxReps !== repDashesContainerElement.children.length) {
+      repDashesContainerElement.innerHTML = '';
+      for (let i = 0; i < newMaxReps; i += 1) {
+        const dash = document.createElement('div');
+        dash.classList.add('stretch__rep__dashes__dash');
+        dash.classList.add('stretch__dashes__dash');
+        repDashesContainerElement.appendChild(dash);
+      }
+      setElementChildrenOnCircle(
+        repDashesContainerElement,
+        newMaxReps,
+        '18vmin',
+        180,
+      );
+    }
+    updateDOM();
+  };
 
   const soundTimes: Record<Sound, [number, number]> = {
     1: [23847, 406],
@@ -72,7 +152,7 @@ const initStretch = () => {
     8: [31777, 348],
     9: [32891, 557],
     10: [33913, 476],
-    session_started: [337, 3471],
+    session_started: [337, 2000],
     begin: [5968, 476],
     stop_switch_sides: [7605, 1462],
     stop_rep_number: [10310, 1567],
@@ -133,8 +213,19 @@ const initStretch = () => {
   let currentStartTime = 0;
   let lastStepTimestamp = 0;
   let startTimeout;
+  let routine: StretchRoutine;
+
+  const getMaxReps = () => routine.sets[currentSet - 1].reps ?? 0;
+
+  const getMaxSets = () => routine.sets.length ?? 0;
+
+  const getRepDuration = () => routine.sets[currentSet - 1]?.repDuration ?? 0;
+
+  const getSwitchSides = () => routine.sets[currentSet - 1]?.switchSides ?? 0;
 
   const updateDOM = () => {
+    updateElementRefs();
+
     for (let i = 0; i < repDashElements.length; i += 1) {
       if (!isActive) {
         repDashElements[i].dataset.status = '';
@@ -144,7 +235,9 @@ const initStretch = () => {
         repDashElements[i].innerHTML = '';
       } else if (i + 1 === currentRep) {
         repDashElements[i].dataset.status = 'active';
-        repDashElements[i].innerHTML = `<span>${currentSide}</span>`;
+        repDashElements[i].innerHTML = getSwitchSides()
+          ? `<span>${currentSide}</span>`
+          : '';
       } else {
         repDashElements[i].dataset.status = undefined;
         repDashElements[i].innerHTML = '';
@@ -180,14 +273,17 @@ const initStretch = () => {
     title.classList.add('hidden');
     outerElement.dataset.status = 'active';
     button.classList.add('pause');
+    optionsButton.classList.add('hidden');
     say(['session_started']);
+    [routine] = loadOptions().routines;
+    currentRep = 1;
+    currentSet = 1;
+    updateDashElements();
     startTimeout = setTimeout(() => {
       repDashElements.forEach((elem) => elem.classList.remove('hidden'));
       setDashElements.forEach((elem) => elem.classList.remove('hidden'));
       isActive = true;
       isPaused = false;
-      currentRep = 1;
-      currentSet = 1;
       currentTime = beginTimeS;
       currentStartTime = beginTimeS;
       currentSide = 'R';
@@ -216,11 +312,12 @@ const initStretch = () => {
     startTimeout = undefined;
     button.classList.remove('pause');
     title.classList.remove('hidden');
+    optionsButton.classList.remove('hidden');
     stopButton.classList.remove('active');
 
     outerElement.dataset.status = '';
-    repDashElements.forEach((elem) => elem.classList.add('hidden'));
-    setDashElements.forEach((elem) => elem.classList.add('hidden'));
+    repDashesContainerElement.innerHTML = '';
+    setDashesContainerElement.innerHTML = '';
     isActive = false;
     isBreak = false;
     currentTime = repTimeS;
@@ -242,12 +339,12 @@ const initStretch = () => {
     if (isBreak) {
       if (currentTime === 0) {
         isBreak = false;
-        currentTime = repTimeS;
-        currentStartTime = repTimeS;
+        currentTime = getRepDuration();
+        currentStartTime = getRepDuration();
         say(['begin']);
       }
     } else if (currentTime === 0) {
-      if (currentSide === 'R') {
+      if (getSwitchSides() && currentSide === 'R') {
         currentSide = 'L';
         currentTime = breakTimeS;
         currentStartTime = breakTimeS;
@@ -257,7 +354,7 @@ const initStretch = () => {
         currentRep += 1;
         currentSide = 'R';
 
-        if (currentRep === maxRep + 1) {
+        if (currentRep === getMaxReps() + 1) {
           currentRep = 1;
           currentSet += 1;
           currentTime = betweenSetTimeS;
@@ -273,6 +370,7 @@ const initStretch = () => {
             '10',
             'seconds',
           ]);
+          updateDashElements();
         } else {
           currentTime = breakTimeS;
           currentStartTime = breakTimeS;
@@ -284,7 +382,7 @@ const initStretch = () => {
           ]);
         }
 
-        if (currentSet === maxSet + 1) {
+        if (currentSet === getMaxSets() + 1) {
           end();
         }
       }
@@ -306,7 +404,7 @@ const initStretch = () => {
       }
       lastStepTimestamp = Date.now();
     }
-  }, 1000);
+  }, 500);
 
   const onButtonClick = (e: MouseEvent) => {
     if (isActive) {
@@ -353,7 +451,7 @@ const initStretch = () => {
     e.preventDefault();
   };
 
-  onOptionsButtonClick(new MouseEvent('click'));
+  start();
 
   button.addEventListener('click', onButtonClick);
   button.addEventListener('touchstart', onButtonClick);

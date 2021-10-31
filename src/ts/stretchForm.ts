@@ -1,5 +1,7 @@
 import { loadOptions, saveOptions } from './stretchConfig';
 
+const MAX_SETS = 5;
+
 export const initializeStretchForm = (
   container: HTMLDivElement,
   onClose: () => void,
@@ -14,7 +16,7 @@ export const initializeStretchForm = (
     openTimeout = setTimeout(() => {
       updateDOM();
       openTimeout = null;
-    }, 250);
+    }, 500);
   };
 
   const close = () => {
@@ -91,6 +93,8 @@ export const initializeStretchForm = (
         saveOptions(options);
         updateDOM();
       });
+      removeButton.disabled = options.routines[0].sets.length === 1;
+
       form.appendChild(removeButton);
 
       container.appendChild(form);
@@ -105,19 +109,21 @@ export const initializeStretchForm = (
 
     const newButton = document.createElement('button');
     newButton.innerText = 'Add set';
-    newButton.addEventListener('click', addSet);
-    container.appendChild(newButton);
-  };
-
-  const addSet = () => {
-    updateOptions();
-    options.routines[0].sets.push({
-      reps: 5,
-      repDuration: 30,
-      switchSides: true,
+    newButton.addEventListener('click', () => {
+      updateOptions();
+      options.routines[0].sets.push({
+        reps: 5,
+        repDuration: 30,
+        switchSides: true,
+      });
+      saveOptions(options);
+      updateDOM();
     });
-    saveOptions(options);
-    updateDOM();
+
+    if (options.routines[0].sets.length >= MAX_SETS) {
+      newButton.disabled = true;
+    }
+    container.appendChild(newButton);
   };
 
   return { openStretchForm: open, closeStretchForm: close };

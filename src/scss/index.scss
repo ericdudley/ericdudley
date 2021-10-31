@@ -10,7 +10,7 @@ $stretch-outer-circle-size: 30vmin;
 $button-size: 10vmin;
 $dash-circle-size: 18vmin;
 $dash-size: 10vmin;
-$set-dash-size: $dash-size * 1.3;
+$set-dash-size: $dash-size * 1.2;
 $dash-font-size: 6vmin;
 $outer-circle-color: #2e2e2e;
 $stretch-background-color: rgb(63, 155, 101);
@@ -298,13 +298,13 @@ h2 > a {
     @include absolute-centered();
     border-radius: 50%;
     background-color: $stretch-background-color;
-    transition: width 250ms ease-in-out, height 250ms ease-in-out,
-      border-radius 250ms ease-in-out;
+    transition: width 500ms ease-in-out, height 500ms ease-in-out,
+      border-radius 500ms ease-in-out;
 
     &.expanded {
       padding: 16px;
       border-radius: 16px;
-      width: min(800px, 80vw);
+      min-width: min(800px, 80vw);
       min-height: $stretch-outer-circle-size;
       height: fit-content;
       max-height: 90vh;
@@ -425,13 +425,6 @@ h2 > a {
   }
 
   &__set__dashes {
-    @include on-circle(
-      $item-count: 3,
-      $circle-size: $dash-circle-size,
-      $item-size: $dash-size,
-      $offset-deg: 120deg
-    );
-
     &__dash {
       width: math.div($set-dash-size, 1.5);
       height: $set-dash-size;
@@ -445,15 +438,6 @@ h2 > a {
         background: rgb(76, 255, 117);
       }
     }
-  }
-
-  &__rep__dashes {
-    @include on-circle(
-      $item-count: 5,
-      $circle-size: $dash-circle-size,
-      $item-size: $dash-size,
-      $offset-deg: -72deg
-    );
   }
 }
 
