@@ -4,13 +4,13 @@
 /* Whole Page Styles */
 $h2-offset: math.div(100vw, 20);
 $full-dim: 100vmax * 1.25;
-$small-device-width: 575.98px;
+$small-device-width: 769px;
 $stretch-outer-circle-active-size: 90vmin;
 $stretch-outer-circle-size: 30vmin;
 $button-size: 10vmin;
 $dash-circle-size: 18vmin;
 $dash-size: 10vmin;
-$set-dash-size: $dash-size * 1.3;
+$set-dash-size: $dash-size * 1.2;
 $dash-font-size: 6vmin;
 $outer-circle-color: #2e2e2e;
 $stretch-background-color: rgb(63, 155, 101);
@@ -245,30 +245,6 @@ h2 > a {
   width: 300px;
 }
 
-@media (max-width: $small-device-width) {
-  h2 {
-    font-size: 1.5em;
-  }
-
-  h2 > a {
-    font-size: 2em;
-  }
-
-  #about-me-page {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
-
-  #food-container {
-    margin-right: 0;
-  }
-
-  #food {
-    width: 200px;
-  }
-}
-
 /* Stretch Page */
 
 @keyframes grow {
@@ -296,6 +272,10 @@ h2 > a {
   @include absolute-centered();
   border-radius: 10000px;
 
+  &.hidden {
+    display: none;
+  }
+
   &-outer-circle {
     width: $stretch-outer-circle-size;
     height: $stretch-outer-circle-size;
@@ -316,9 +296,20 @@ h2 > a {
     width: 100%;
     height: 100%;
     @include absolute-centered();
-    border-radius: 10000px;
+    border-radius: 50%;
     background-color: $stretch-background-color;
-    transition: width 500ms ease-in-out, height 500ms ease-in-out;
+    transition: width 500ms ease-in-out, height 500ms ease-in-out,
+      border-radius 500ms ease-in-out;
+
+    &.expanded {
+      padding: 16px;
+      border-radius: 16px;
+      min-width: min(800px, 80vw);
+      min-height: $stretch-outer-circle-size;
+      height: fit-content;
+      max-height: 90vh;
+      overflow-y: auto;
+    }
   }
 
   &__text {
@@ -434,13 +425,6 @@ h2 > a {
   }
 
   &__set__dashes {
-    @include on-circle(
-      $item-count: 3,
-      $circle-size: $dash-circle-size,
-      $item-size: $dash-size,
-      $offset-deg: 120deg
-    );
-
     &__dash {
       width: math.div($set-dash-size, 1.5);
       height: $set-dash-size;
@@ -455,15 +439,60 @@ h2 > a {
       }
     }
   }
+}
 
-  &__rep__dashes {
-    @include on-circle(
-      $item-count: 5,
-      $circle-size: $dash-circle-size,
-      $item-size: $dash-size,
-      $offset-deg: -72deg
-    );
+#stretch-options-button {
+  position: absolute;
+  right: $button-size * 0.25;
+  top: $button-size * 0.25;
+  width: $button-size * 0.5;
+  height: $button-size * 0.5;
+  border: none;
+  transform: none;
+  cursor: pointer;
+
+  &.active {
+    display: block;
   }
+
+  &.active:hover {
+    opacity: 0.8;
+  }
+}
+
+.stretch-options-set-form {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+
+  & > label {
+    margin-left: 8px;
+  }
+}
+
+.stretch-options-form-button {
+  margin: 8px;
+  outline: rgb(255, 255, 255) solid 2px;
+  background: transparent;
+  border: none;
+  color: white;
+  border-radius: 8px;
+  padding: 8px;
+  cursor: pointer;
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.2);
+  }
+}
+
+.stretch-options-input {
+  border-radius: 4px;
+  border: solid white 2px;
+  margin: 8px;
+}
+
+.stretch-options-button-container {
+  margin-top: 24px;
 }
 
 @media (max-width: $small-device-width) {
@@ -474,6 +503,47 @@ h2 > a {
   }
 
   h2 {
+    font-size: 1.5em;
     margin-left: 0 !important;
+  }
+
+  h2 > a {
+    font-size: 2em;
+  }
+
+  #about-me-page {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  #food-container {
+    margin-right: 0;
+  }
+
+  #food {
+    width: 200px;
+  }
+
+  #stretch-options-button {
+    width: $button-size;
+    height: $button-size;
+  }
+
+  .stretch-options-set-form {
+    display: flex;
+    align-items: flex-start;
+    flex-direction: column;
+    flex-wrap: wrap;
+
+    & > label {
+      margin-left: 0px;
+      margin-top: 8px;
+    }
+  }
+
+  .stretch-options-input {
+    margin-left: 0;
+    margin-right: 0;
   }
 }
