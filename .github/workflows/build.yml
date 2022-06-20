@@ -20,6 +20,11 @@ jobs:
         run: npm install
       - name: Lint
         run: npm run lint
+      - name: Setup Hugo
+        uses: peaceiris/actions-hugo@v2
+        with:
+          hugo-version: "0.101.0"
+          extended: true
       - name: Build for production
         run: npm run build
       - name: Create CNAME file
