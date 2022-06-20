@@ -212,19 +212,19 @@ h2 {
   font-size: 1.5em;
 }
 
-#home h2:nth-child(1) {
+#about h2:nth-child(1) {
   margin-left: 0px;
 }
 
-#home h2:nth-child(2) {
+#about h2:nth-child(2) {
   margin-left: 5vw;
 }
 
-#home h2:nth-child(3) {
+#about h2:nth-child(3) {
   margin-left: 10vw;
 }
 
-#home h2:nth-child(4) {
+#about h2:nth-child(4) {
   margin-left: 15vw;
 }
 
@@ -234,17 +234,41 @@ h2 > a {
   text-decoration: underline;
 }
 
-#food-container {
-  text-align: center;
-  font-size: 0.75em;
+.projects-wrapper {
   margin-top: 32px;
-  margin-right: 32px;
-  float: right;
 }
 
-#food {
+.projects {
   margin-top: 8px;
-  width: 300px;
+  display: flex;
+  height: 9em;
+  overflow: hidden;
+  align-items: center;
+}
+
+.subdomains {
+  position: relative;
+  font-size: 32px;
+  display: flex;
+  flex-direction: column;
+  justify-content: end;
+  text-align: right;
+}
+.subdomains > h3 {
+  margin: 0;
+}
+.subdomains > h3.active {
+  text-decoration: underline;
+}
+
+.domain {
+  font-size: 32px;
+}
+.domain > h3 {
+  margin: 0;
+}
+.domain > h3.active {
+  text-decoration: underline;
 }
 
 @media (max-width: 769px) {

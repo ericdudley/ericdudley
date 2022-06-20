@@ -26,8 +26,11 @@
       </h2>
       <h2>
         I
-        <a target="_blank" rel="noreferrer" href="https://github.com/ericdudley"
-          >write code</a
+        <a
+          target="_blank"
+          rel="noreferrer"
+          href="{{ ref . "/blog" }}"
+          >write blog posts</a
         >.
       </h2>
       <h2>
@@ -48,10 +51,15 @@
           >make music</a
         >.
       </h2>
-      <div id="food-container">
-        <h2>Oh, and I like cooking.</h2>
-        {{ $food := resources.Get "images/food.jpg" | fingerprint }}
-        <img id="food" src="{{ $food.Permalink }}" />
+      <div class="projects-wrapper">
+        <h2>Check out some of my personal projects</h2>
+        <div class="projects">
+          <div class="subdomains">
+          </div>
+          <div class="domain">
+            <h3>.ericdudley.com</h3>
+          </div>
+        </div>
       </div>
     </div>
   </div>
