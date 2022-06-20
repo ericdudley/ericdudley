@@ -6,13 +6,13 @@
   "scripts": {
     "start": "hugo server --buildDrafts",
     "build": "hugo",
-    "lint": "eslint landing-site/**/*.{js,ts}",
-    "lint:fix": "eslint landing-site/**/*.{js,ts} --fix",
+    "lint": "eslint src/**/*.{js,ts}",
+    "lint:fix": "eslint src/**/*.{js,ts} --fix",
     "tsc": "tsc --watch"
   },
   "lint-staged": {
     "*.{js,ts}": [
-      "eslint landing-site/**/*.{js,ts} --fix"
+      "eslint src/**/*.{js,ts} --fix"
     ]
   },
   "husky": {
