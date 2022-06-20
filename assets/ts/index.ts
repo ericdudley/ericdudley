@@ -1,5 +1,5 @@
 const repeat = (str: string, count: number) => {
-  let newStr = "";
+  let newStr = '';
   for (let i = 0; i < count; i += 1) {
     newStr += str;
   }
@@ -7,15 +7,15 @@ const repeat = (str: string, count: number) => {
 };
 
 const initHeaderAnimation = () => {
-  const h1s = document.querySelectorAll("h1");
+  const h1s = document.querySelectorAll('h1');
   for (let i = 0; i < h1s.length; i += 1) {
-    const text = h1s[i].dataset?.text || "";
+    const text = h1s[i].dataset?.text || '';
     setInterval(() => {
       let idx = Math.floor(Math.random() * text.length);
       for (
         let i = 0;
-        i < text.length &&
-        !"abcdefghijklmnopqrstuvwxyz".includes(text[idx].toLowerCase());
+        i < text.length
+        && !'abcdefghijklmnopqrstuvwxyz'.includes(text[idx].toLowerCase());
         i += 1
       ) {
         idx = Math.floor(Math.random() * text.length);
@@ -29,13 +29,11 @@ const initHeaderAnimation = () => {
   }
 };
 
-window.addEventListener("DOMContentLoaded", () => {
+window.addEventListener('DOMContentLoaded', () => {
   const noTransitionOnLoadElements = document.querySelectorAll(
-    ".no-transition-on-load"
+    '.no-transition-on-load',
   );
-  noTransitionOnLoadElements.forEach((element) =>
-    element.classList.remove("no-transition-on-load")
-  );
+  noTransitionOnLoadElements.forEach((element) => element.classList.remove('no-transition-on-load'));
 
   initHeaderAnimation();
 });

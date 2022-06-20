@@ -6,8 +6,8 @@
   "scripts": {
     "start": "hugo server --buildDrafts",
     "build": "hugo",
-    "lint": "eslint ./**/*.{js,ts}",
-    "lint:fix": "eslint ./**/*.{js,ts} --fix",
+    "lint": "eslint assets/**/*.{js,ts}",
+    "lint:fix": "eslint assets/**/*.{js,ts} --fix",
     "tsc": "tsc --watch"
   },
   "lint-staged": {
