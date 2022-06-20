@@ -4,15 +4,15 @@
   "description": "ericdudley.com, my personal website",
   "main": "index.js",
   "scripts": {
-    "start": "parcel src/index.html",
-    "build": "parcel build src/*.html",
-    "lint": "eslint src/**/*.{js,ts}",
-    "lint:fix": "eslint src/**/*.{js,ts} --fix",
+    "start": "hugo server --buildDrafts",
+    "build": "hugo",
+    "lint": "eslint landing-site/**/*.{js,ts}",
+    "lint:fix": "eslint landing-site/**/*.{js,ts} --fix",
     "tsc": "tsc --watch"
   },
   "lint-staged": {
     "*.{js,ts}": [
-      "eslint src/**/*.{js,ts} --fix"
+      "eslint landing-site/**/*.{js,ts} --fix"
     ]
   },
   "husky": {
@@ -44,8 +44,11 @@
     "typescript": "^4.3.5"
   },
   "dependencies": {
-    "audio": "^1.2.0",
-    "howler": "^2.2.3",
+    "@babel/cli": "^7.17.10",
+    "@babel/core": "^7.18.5",
+    "@babel/preset-env": "^7.18.2",
+    "@babel/preset-typescript": "^7.17.12",
     "sass": "^1.37.5"
-  }
+  },
+  "browserslist": "> 0.25%, not dead"
 }
