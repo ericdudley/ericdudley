@@ -8,7 +8,8 @@
     "build": "hugo",
     "lint": "eslint assets/**/*.{js,ts}",
     "lint:fix": "eslint assets/**/*.{js,ts} --fix",
-    "tsc": "tsc --watch"
+    "tsc": "tsc --watch",
+    "install-dart-sass-embedded": "wget https://github.com/sass/dart-sass-embedded/releases/download/1.52.3/sass_embedded-1.52.3-linux-x64.tar.gz -O sass_embedded.tar.gz && tar -xvf sass_embedded.tar.gz && export PATH=$PATH:$(pwd)/sass_embedded"
   },
   "lint-staged": {
     "*.{js,ts}": [
