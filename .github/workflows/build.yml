@@ -26,9 +26,9 @@ jobs:
           hugo-version: "0.101.0"
           extended: true
       - name: Install dart-sass-embedded
-        run: npm run install-dart-sass-embedded
+        run: npm run install-dart-sass-embedded && echo $PATH
       - name: Build for production
-        run: npm run build
+        run: echo $PATH && npm run build
       - name: Create CNAME file
         run: echo "ericdudley.com" > ./build/CNAME
       - name: Deploy
