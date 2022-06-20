@@ -13,10 +13,10 @@ const initHeaderAnimation = () => {
     setInterval(() => {
       let idx = Math.floor(Math.random() * text.length);
       for (
-        let i = 0;
-        i < text.length
+        let j = 0;
+        j < text.length
         && !'abcdefghijklmnopqrstuvwxyz'.includes(text[idx].toLowerCase());
-        i += 1
+        j += 1
       ) {
         idx = Math.floor(Math.random() * text.length);
       }
