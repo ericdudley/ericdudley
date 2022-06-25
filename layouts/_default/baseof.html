@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, user-scalable=no"
+    />
+    <meta name="description" content="" />
+    <meta name="keywords" content="" />
+
+    <title>{{ block "title" . }} {{ .Site.Title }} {{ end }}</title>
+
+    {{ $options := (dict "transpiler" "dartsass") }} {{ $style := resources.Get
+    "scss/index.scss" | resources.ToCSS $options | fingerprint }}
+    <link rel="stylesheet" href="{{ $style.Permalink }}" />
+
+    {{- $transpiled := resources.Get "ts/index.ts" | babel | fingerprint -}}
+    <script src="{{ $transpiled.Permalink }}"></script>
+
+    {{ block "style" . }}{{ end }}
+    <style>
+      @media (max-width: 769px) {
+       {{ block "mobile-style" . }}{{ end }}
+      }
+    </style>
+  </head>
+  <body>
+    {{ partial "navigation" . }} {{ block "main" . }}{{ end }} {{ partial
+    "analytics.html" . }}
+  </body>
+</html>

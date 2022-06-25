@@ -1,0 +1,67 @@
+{{ define "main" }}
+<div class="no-transition-on-load">
+  <header id="home" class="page">
+    <div class="name-text">
+      <div>
+        <h1 data-text="ERIC">ERIC</h1>
+        <h1 data-text="DUDLEY">DUDLEY</h1>
+      </div>
+      <div>
+        <div class="down-arrow"></div>
+        <div class="down-arrow"></div>
+        <div class="down-arrow"></div>
+      </div>
+    </div>
+  </header>
+  <div id="about" class="page">
+    <div id="about-me-page">
+      <h2>
+        Hello, I'm
+        <a
+          target="_blank"
+          rel="noreeferrer"
+          href="https://www.linkedin.com/in/eric-dudley-894721106/"
+          >Eric</a
+        >.
+      </h2>
+      <h2>
+        I
+        <a
+          target="_blank"
+          rel="noreferrer"
+          href="{{ ref . "/blog" }}"
+          >write blog posts</a
+        >.
+      </h2>
+      <h2>
+        I
+        <a
+          target="_blank"
+          rel="noreferrer"
+          href="https://www.instagram.com/unexpected.ericdudley/"
+          >take pictures</a
+        >.
+      </h2>
+      <h2>
+        I
+        <a
+          target="_blank"
+          rel="noreferrer"
+          href="https://soundcloud.com/eric-dudley-140295232"
+          >make music</a
+        >.
+      </h2>
+      <div class="projects-wrapper">
+        <h2>Check out some of my personal projects</h2>
+        <div class="projects">
+          <div class="subdomains">
+          </div>
+          <div class="domain">
+            <h3>.ericdudley.com</h3>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{{ end }}
