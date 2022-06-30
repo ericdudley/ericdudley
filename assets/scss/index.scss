@@ -78,10 +78,6 @@ body {
   align-items: center;
 }
 
-.page:first-child {
-  height: calc(100vh - $nav-height);
-}
-
 /* Header Page */
 header {
   text-align: center;
