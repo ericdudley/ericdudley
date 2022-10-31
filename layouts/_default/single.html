@@ -4,6 +4,7 @@
     <article>
       <h1 data-text="{{ .Title }}">{{ .Title }}</h1>
       {{ .Content }}
+      {{ .PublishDate | time.Format ":date_long" }}
     </article>
   </div>
 </div>
