@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+    <id>https://ericdudley.com/blog</id>
+    <title>Eric Dudley Blog</title>
+    <updated>2023-02-24T00:00:00.000Z</updated>
+    <generator>https://github.com/jpmonette/feed</generator>
+    <link rel="alternate" href="https://ericdudley.com/blog"/>
+    <subtitle>Eric Dudley Blog</subtitle>
+    <icon>https://ericdudley.com/img/favicon.ico</icon>
+    <entry>
+        <title type="html"><![CDATA[First Blog Post]]></title>
+        <id>https://ericdudley.com/blog/first-blog-post</id>
+        <link href="https://ericdudley.com/blog/first-blog-post"/>
+        <updated>2023-02-24T00:00:00.000Z</updated>
+        <summary type="html"><![CDATA[This is my first blog post! You may think that this is a default post, but it is not. I wrote this post myself. I am a real person, living in the year 2023. I am writing this post to test the blog feature of the new version of the website. I hope you enjoy it!]]></summary>
+        <content type="html"><![CDATA[<p>This is my first blog post! You may think that this is a default post, but it is not. I wrote this post myself. I am a real person, living in the year 2023. I am writing this post to test the blog feature of the new version of the website. I hope you enjoy it!</p><p>Here's to many more (actually helpful) blog posts in the future.</p>]]></content>
+        <author>
+            <name>Eric Dudley</name>
+            <uri>https://www.linkedin.com/in/eric-dudley-894721106</uri>
+        </author>
+    </entry>
+</feed>
