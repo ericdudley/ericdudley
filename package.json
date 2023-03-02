@@ -1,6 +1,6 @@
 {
-  "name": "ericdudley-com",
-  "version": "0.0.0",
+  "name": "ericdudley",
+  "version": "2.0.0",
   "private": true,
   "scripts": {
     "docusaurus": "docusaurus",
@@ -57,5 +57,6 @@
   },
   "engines": {
     "node": ">=16.14"
-  }
+  },
+  "packageManager": "yarn@3.4.1"
 }
