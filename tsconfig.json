@@ -1,12 +1,7 @@
 {
+  // This file is not used in compilation. It is here just for a nice editor experience.
+  "extends": "@tsconfig/docusaurus/tsconfig.json",
   "compilerOptions": {
-    "baseUrl": "./src",
-    "outDir": "./tscdir",
-    "paths": {
-      "~*": ["./*"]
-    },
-    "target": "ES2015",
-    "moduleResolution": "Node"
-  },
-  "include": ["src/**/*"]
+    "baseUrl": "."
+  }
 }

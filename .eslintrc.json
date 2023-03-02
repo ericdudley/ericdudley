@@ -1,26 +1,28 @@
 {
-  "env": {
-    "browser": true,
-    "es2021": true
-  },
-  "extends": ["airbnb-base"],
-  "parser": "@typescript-eslint/parser",
-  "parserOptions": {
-    "ecmaVersion": 12,
-    "sourceType": "module"
-  },
-  "plugins": ["@typescript-eslint"],
-  "rules": {
-    "import/extensions": 0,
-    "import/prefer-default-export": 0,
-    "no-param-reassign": 0,
-    "no-use-before-define": 0,
-    "no-loop-func": 0
-  },
-  "settings": {
-    "import/resolver": {
-      "typescript": {}
-    }
-  },
-  "ignorePatterns": ["node_modules", "*.svg"]
-}
+    "env": {
+      "browser": true,
+      "es2021": true
+    },
+    "extends": ["airbnb-base"],
+    "parser": "@typescript-eslint/parser",
+    "parserOptions": {
+      "ecmaVersion": 12,
+      "sourceType": "module"
+    },
+    "plugins": ["@typescript-eslint"],
+    "rules": {
+      "import/extensions": 0,
+      "import/prefer-default-export": 0,
+      "no-param-reassign": 0,
+      "no-use-before-define": 0,
+      "no-loop-func": 0,
+      "import/no-unresolved": [ 2, {"ignore": ["^@theme", "^@docusaurus", "^@site"]}]
+    },
+    "settings": {
+      "import/resolver": {
+        "typescript": {}
+      }
+    },
+    "ignorePatterns": ["node_modules", "*.svg"]
+  }
+  
