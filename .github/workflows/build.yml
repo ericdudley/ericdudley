@@ -17,16 +17,6 @@ jobs:
         run: corepack enable
       - name: Use Yarn 3
         run: yarn set version stable
-      - name: Cache dependencies
-        uses: actions/cache@v2
-        id: cache-dependencies
-        with:
-          path: |
-            .yarn/cache
-            .pnp.*
-          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
-          restore-keys: |
-            ${{ runner.os }}-yarn-
       - name: Install deps
         if: steps.cache-dependencies.outputs.cache-hit != 'true'
         run: yarn install --immutable
