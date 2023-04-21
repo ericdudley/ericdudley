@@ -116,13 +116,7 @@ const config = {
           src: "img/me.png",
         },
         title: "Eric Dudley",
-        items: [
-          { to: "/blog", label: "Blog", position: "left" },
-          {
-            type: "localeDropdown",
-            position: "right",
-          },
-        ],
+        items: [{ to: "/blog", label: "Blog", position: "left" }],
       },
       footer: {
         style: "light",
