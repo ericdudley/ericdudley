@@ -74,14 +74,14 @@
     #3a3a08,
     #062c0c,
     #05292b,
-    #08062f,
+    #d4d2ec,
     #29052c,
     #27002b
   );
 }
 
 html {
-  font-family: monospace;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
 
 @keyframes rainbow {
