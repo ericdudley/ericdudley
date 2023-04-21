@@ -70,8 +70,6 @@ Given this title, a reviewer immediately understands the following:
 
 This PR description is concise, focusing on educating the reviewer about the impact of the changes instead of explaining the code itself. Even if the reviewer didn't look at the code, they would know that this new module exists and that they should be using it in their own PRs.
 
-Your mindset should be:
-
 :::tip Mindset
 I want to maximize the "knowledge gained" to "time" ratio for my reviewers.
 
@@ -79,7 +77,6 @@ I want to maximize the "knowledge gained" to "time" ratio for my reviewers.
 :::
 
 :::caution Pitfalls to avoid
-Pitfalls to avoid:
 
 - **Writing a PR title that is too vague** - A PR title should be a short but meaningful description of the changes in the PR. It should be searchable and immediately obvious to anyone who reads it what the PR's purpose is. For example, instead of writing "fix bug", write "fix: [JIRA-1234] handle undefined date in date formatting".
 
@@ -92,8 +89,6 @@ Pitfalls to avoid:
 It may sound obvious, but your task is straightforward: take the time to read the PR title and description. If the PR author followed the guidelines above, then you will gain a ton of useful knowledge by reading this content.
 
 If the PR author did not provide a useful title/description, then you should ask them to! Ultimately, it will be much easier for the PR author to write this, then having each reviewer independently have to glean the same information by reading through all the code.
-
-Your mindset should be:
 
 :::tip Mindset
 I want to understand the changes in this PR well enough so that I can make better decisions in the future.
@@ -208,7 +203,6 @@ This PR habit has made a huge difference in the quality of my PRs. As soon as yo
 2. Go over each file and look for **obvious** mistakes or gaps in your code quality. If you can anticipate the majority of PR feedback, then you can save time for your reviewers and yourself to focus on high value feedback.
 3. Make any changes from your self review (no need to actually leave PR comments), and commit the changes in a `refactor: self review` commit.
 
-Your mindset should be:
 :::tip Mindset
 I want to get high quality feedback from my reviewers, so I'm going to make sure there is no low-hanging fruit that I could identify myself.
 
