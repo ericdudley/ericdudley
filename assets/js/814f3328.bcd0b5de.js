@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunkericdudley=self.webpackChunkericdudley||[]).push([[535],{5641:e=>{e.exports=JSON.parse('{"title":"Recent posts","items":[{"title":"Code Review Mindset","permalink":"/blog/code-review-mindset"},{"title":"First Blog Post","permalink":"/blog/first-blog-post"}]}')}}]);
