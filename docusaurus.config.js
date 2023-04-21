@@ -84,6 +84,25 @@ const config = {
         disableInDev: false,
       },
     ],
+    // Add back in to have multiple blog variants
+    // [
+    //   "@docusaurus/plugin-content-blog",
+    //   {
+    //     /**
+    //      * Required for any multi-instance plugin
+    //      */
+    //     id: "second-blog",
+    //     /**
+    //      * URL route for the blog section of your site.
+    //      * *DO NOT* include a trailing slash.
+    //      */
+    //     routeBasePath: "my-second-blog",
+    //     /**
+    //      * Path to data on filesystem relative to site dir.
+    //      */
+    //     path: "./my-second-blog",
+    //   },
+    // ],
   ],
 
   themeConfig:
@@ -97,7 +116,13 @@ const config = {
           src: "img/me.png",
         },
         title: "Eric Dudley",
-        items: [{ to: "/blog", label: "Blog", position: "left" }],
+        items: [
+          { to: "/blog", label: "Blog", position: "left" },
+          {
+            type: "localeDropdown",
+            position: "right",
+          },
+        ],
       },
       footer: {
         style: "light",
