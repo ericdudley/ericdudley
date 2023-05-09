@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunkericdudley=self.webpackChunkericdudley||[]).push([[429],{7394:e=>{e.exports=JSON.parse('{"label":"mathematics","permalink":"/blog/tags/mathematics","allTagsPath":"/blog/tags","count":1}')}}]);
