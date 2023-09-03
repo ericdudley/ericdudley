@@ -1595,6 +1595,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@babel/runtime@npm:^7.19.4":
+  version: 7.22.11
+  resolution: "@babel/runtime@npm:7.22.11"
+  dependencies:
+    regenerator-runtime: ^0.14.0
+  checksum: a5cd6683a8fcdb8065cb1677f221e22f6c67ec8f15ad1d273b180b93ab3bd86c66da2c48f500d4e72d8d2cfa85ff4872a3f350e5aa3855630036af5da765c001
+  languageName: node
+  linkType: hard
+
 "@babel/template@npm:^7.12.7, @babel/template@npm:^7.18.10, @babel/template@npm:^7.20.7":
   version: 7.20.7
   resolution: "@babel/template@npm:7.20.7"
@@ -3057,6 +3066,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/react-virtualized-auto-sizer@npm:^1.0.1":
+  version: 1.0.1
+  resolution: "@types/react-virtualized-auto-sizer@npm:1.0.1"
+  dependencies:
+    "@types/react": "*"
+  checksum: 67eff0670a1991c2b16992274ada5f0b3f9d5c2d6209ef38e8f8ae2c0218211a3292882f5b7dd6f09519000dc20847629f049c9acc267e000626b7141e5927a6
+  languageName: node
+  linkType: hard
+
 "@types/react@npm:*":
   version: 18.0.28
   resolution: "@types/react@npm:18.0.28"
@@ -3139,6 +3157,13 @@ __metadata:
   version: 2.0.6
   resolution: "@types/unist@npm:2.0.6"
   checksum: 25cb860ff10dde48b54622d58b23e66214211a61c84c0f15f88d38b61aa1b53d4d46e42b557924a93178c501c166aa37e28d7f6d994aba13d24685326272d5db
+  languageName: node
+  linkType: hard
+
+"@types/uuid@npm:^9.0.3":
+  version: 9.0.3
+  resolution: "@types/uuid@npm:9.0.3"
+  checksum: 3dde198defd71c067dd14b3050a8fe6d1ead5fe94ec318472e2c30a399d13f18941fe66cffabdcac7267177c9de2f975fdee6f0cc87cde610a2578e1ce4cc3af
   languageName: node
   linkType: hard
 
@@ -5029,6 +5054,20 @@ __metadata:
   languageName: node
   linkType: hard
 
+"d3-ease@npm:^2.0.0":
+  version: 2.0.0
+  resolution: "d3-ease@npm:2.0.0"
+  checksum: 1a9f6dfc836f0c66fba1ed28f0a3ad170d7c4f4812d442c6b562163e1a60283cc697e72a2cc4ba64abff9e77ad56354847986a5964e0c661af9b6d132c642e29
+  languageName: node
+  linkType: hard
+
+"d3-hierarchy@npm:^2.0.0":
+  version: 2.0.0
+  resolution: "d3-hierarchy@npm:2.0.0"
+  checksum: 594bea104d3cf947da8499f3c50c93d914c5af34195ef3848e4888ed5c8c1aa6a1adae1dd656acfd04779005255347f68a3d270d825ec94fc88b88a72dd7cb4e
+  languageName: node
+  linkType: hard
+
 "debug@npm:2.6.9, debug@npm:^2.6.0":
   version: 2.6.9
   resolution: "debug@npm:2.6.9"
@@ -5528,6 +5567,8 @@ __metadata:
     "@docusaurus/preset-classic": 2.3.1
     "@mdx-js/react": ^1.6.22
     "@tsconfig/docusaurus": ^1.0.5
+    "@types/react-virtualized-auto-sizer": ^1.0.1
+    "@types/uuid": ^9.0.3
     "@typescript-eslint/eslint-plugin": ^5.54.0
     "@typescript-eslint/parser": ^5.54.0
     autoprefixer: ^10.4.13
@@ -5542,9 +5583,13 @@ __metadata:
     prop-types: ^15.8.1
     react: ^17.0.2
     react-dom: ^17.0.2
+    react-tree-graph: ^8.0.1
+    react-virtualized-auto-sizer: ^1.0.20
     tailwindcss: ^3.2.7
     typescript: ^4.7.4
     usehooks-ts: ^2.9.1
+    uuid: ^9.0.0
+    zustand: ^4.4.1
   languageName: unknown
   linkType: soft
 
@@ -10117,6 +10162,30 @@ __metadata:
   languageName: node
   linkType: hard
 
+"react-tree-graph@npm:^8.0.1":
+  version: 8.0.1
+  resolution: "react-tree-graph@npm:8.0.1"
+  dependencies:
+    "@babel/runtime": ^7.19.4
+    d3-ease: ^2.0.0
+    d3-hierarchy: ^2.0.0
+    prop-types: ^15.8.1
+  peerDependencies:
+    react: ^15.3 || ^16 || ^17 || ^18
+  checksum: 6b1f66409a1d2a187cfa4d1d14d7d99e31c3a3cacaa7c38d25a5f9c267f8ffbe83ce291a40bd2cdc6e6c056de6df315682a565aa69777cac26809942230d2a72
+  languageName: node
+  linkType: hard
+
+"react-virtualized-auto-sizer@npm:^1.0.20":
+  version: 1.0.20
+  resolution: "react-virtualized-auto-sizer@npm:1.0.20"
+  peerDependencies:
+    react: ^15.3.0 || ^16.0.0-alpha || ^17.0.0 || ^18.0.0-rc
+    react-dom: ^15.3.0 || ^16.0.0-alpha || ^17.0.0 || ^18.0.0-rc
+  checksum: 2c616ec7587de64a46aa8c6c301e75fee87eb7a39013f25d940b0fe95eee5e8a8a3c109923e241b427752d71fba80f44cd2c8557750967df0777d99ebd16ba24
+  languageName: node
+  linkType: hard
+
 "react-waypoint@npm:^10.3.0":
   version: 10.3.0
   resolution: "react-waypoint@npm:10.3.0"
@@ -10230,6 +10299,13 @@ __metadata:
   version: 0.13.11
   resolution: "regenerator-runtime@npm:0.13.11"
   checksum: 27481628d22a1c4e3ff551096a683b424242a216fee44685467307f14d58020af1e19660bf2e26064de946bad7eff28950eae9f8209d55723e2d9351e632bbb4
+  languageName: node
+  linkType: hard
+
+"regenerator-runtime@npm:^0.14.0":
+  version: 0.14.0
+  resolution: "regenerator-runtime@npm:0.14.0"
+  checksum: 1c977ad82a82a4412e4f639d65d22be376d3ebdd30da2c003eeafdaaacd03fc00c2320f18120007ee700900979284fc78a9f00da7fb593f6e6eeebc673fba9a3
   languageName: node
   linkType: hard
 
@@ -11992,7 +12068,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"use-sync-external-store@npm:^1.2.0":
+"use-sync-external-store@npm:1.2.0, use-sync-external-store@npm:^1.2.0":
   version: 1.2.0
   resolution: "use-sync-external-store@npm:1.2.0"
   peerDependencies:
@@ -12045,6 +12121,15 @@ __metadata:
   bin:
     uuid: dist/bin/uuid
   checksum: 5575a8a75c13120e2f10e6ddc801b2c7ed7d8f3c8ac22c7ed0c7b2ba6383ec0abda88c905085d630e251719e0777045ae3236f04c812184b7c765f63a70e58df
+  languageName: node
+  linkType: hard
+
+"uuid@npm:^9.0.0":
+  version: 9.0.0
+  resolution: "uuid@npm:9.0.0"
+  bin:
+    uuid: dist/bin/uuid
+  checksum: 8dd2c83c43ddc7e1c71e36b60aea40030a6505139af6bee0f382ebcd1a56f6cd3028f7f06ffb07f8cf6ced320b76aea275284b224b002b289f89fe89c389b028
   languageName: node
   linkType: hard
 
@@ -12525,6 +12610,26 @@ __metadata:
   version: 0.1.0
   resolution: "yocto-queue@npm:0.1.0"
   checksum: f77b3d8d00310def622123df93d4ee654fc6a0096182af8bd60679ddcdfb3474c56c6c7190817c84a2785648cdee9d721c0154eb45698c62176c322fb46fc700
+  languageName: node
+  linkType: hard
+
+"zustand@npm:^4.4.1":
+  version: 4.4.1
+  resolution: "zustand@npm:4.4.1"
+  dependencies:
+    use-sync-external-store: 1.2.0
+  peerDependencies:
+    "@types/react": ">=16.8"
+    immer: ">=9.0"
+    react: ">=16.8"
+  peerDependenciesMeta:
+    "@types/react":
+      optional: true
+    immer:
+      optional: true
+    react:
+      optional: true
+  checksum: 80acd0fbf633782996642802c8692bbb80ae5c80a8dff4c501b88250acd5ccd468fbc6398bdce198475a25e3839c91385b81da921274f33ffb5c2d08c3eab400
   languageName: node
   linkType: hard
 

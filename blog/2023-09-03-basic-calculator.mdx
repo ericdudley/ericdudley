@@ -1,0 +1,161 @@
+---
+slug: leetcode-basic-calculator
+title: "Solving the 'Basic Calculator' LeetCode Problem"
+authors: me
+tags: ["software development", "mathematics", "puzzles", "leetcode"]
+---
+
+# Basic Calculator (not as basic as it sounds)
+
+Today, we'll be covering the [Basic Calculator](https://leetcode.com/problems/basic-calculator) problem on LeetCode. While "Basic" is in the name, it's actually classified as a _Hard_ problem, so it's not as simple as it sounds. Let's start with a summary of what we'll be covering today.
+
+1. What is the 'Basic Calculator' problem?
+2. How should I approach the solution?
+3. How do I implement the solution?
+4. How can I extend it?
+
+<!--truncate-->
+
+## What is the 'Basic Calculator' problem?
+
+The problem statement is as follows:
+
+> Given a string `s` representing a valid expression, implement a basic calculator to evaluate it, and return the result of the evaluation.
+
+> Note: You are **not** allowed to use any built-in function which evaluates strings as mathematical expressions, such as `eval()`.
+
+> **Example 1:**
+>
+> ```
+> Input: s = "1 + 1"
+> Output: 2
+> ```
+
+> **Example 2:**
+>
+> ```
+> Input: s = " 2-1 + 2 "
+> Output: 3
+> ```
+
+> **Example 3:**
+>
+> ```
+> Input: s = "(1+(4+5+2)-3)+(6+8)"
+> Output: 23
+> ```
+
+Constraints:
+
+- 1 <= s.length <= 3 \* 105
+- s consists of digits, '+', '-', '(', ')', and ' '.
+- s represents a valid expression.
+- '+' is not used as a unary operation (i.e., "+1" and "+(2 + 3)" is invalid).
+- '-' could be used as a unary operation (i.e., "-1" and "-(2 + 3)" is valid).
+- There will be no two consecutive operators in the input.
+- Every number and running calculation will fit in a signed 32-bit integer.
+
+### Breakdown
+
+The problem is posed as a "Basic Calculator" because we only need to support a few operations:
+
+- Addition `+`
+- Subtraction `-`
+- Negation `-` (unary)
+- Parentheses `(` and `)`
+
+This simplifies the problem by minimizing the complication of order-of-operations (i.e. `* and /` before `+ and -`). We also don't need to worry about floating point numbers, since the problem states that all numbers will fit in a signed 32-bit integer.
+
+## How should I approach the solution?
+
+Often this problem is approached like many other LeetCode problems, we select a data structure to represent the problem, and then we iterate over the data structure to solve the problem. In this case, we can use a stack to represent the problem, and then iterate over the stack to solve it.
+
+For the sake of this article, we will go a bit deeper and discuss it as a general language parsing problem.
+
+### Language Parsing
+
+Often the responsibility of language parsing is split between three modules.
+
+1. Lexer - Converts the input string into a list of tokens.
+2. Parser - Converts the list of tokens into an abstract syntax tree (AST).
+3. Interpreter - Evaluates the AST.
+
+Applied to this problem:
+
+1. Lexer - Converts the input string into a list of tokens. (e.g. `1 + 12` -> `[1, +, 12]`)
+2. Parser - Converts the list of tokens into an abstract syntax tree (AST). (e.g. `[1, +, 12]` -> `(+ 1 12)`)
+3. Interpreter - Evaluates the AST. (e.g. `(+ 1 12)` -> `13`)
+
+By breaking the problem down into these three sub-problems, we can implement and test in a more granular and iterative fashion before assembling the final solution.
+
+## How do I implement the solution?
+
+Let's get coding! We'll start with the lexer.
+
+### Lexer
+
+import { useMemo, useState } from "react";
+
+import LexerView from "../src/components/basic-calculator/LexerView";
+import TextInput from "../src/components/basic-calculator/TextInput";
+import { useBasicCalculatorStore } from "../src/components/basic-calculator/utils";
+
+The lexer for this problem is fairly simple.
+
+- If a valid operation character, add as a token.
+- If a digit, concatenate the digits until the next non-digit character, and add as a token.
+- All other characters (invalid operations or whitespace) will be ignored.
+
+Try adding some input text below, to see how the lexer will tokenize it.
+
+<TextInput />
+<LexerView />
+
+Awesome, now that our lexer is producing tokens, we can feed these tokens into the next module, the parser.
+
+### Parser
+
+import ParserView from "../src/components/basic-calculator/ParserView";
+
+The parser is the most complicated part of this problem, we need to convert the list of tokens into an abstract syntax tree (AST). The AST is a tree representation of the input string, where each node is an operation, and each leaf is a number.
+
+The AST is a recursive data structure, where each node maps to either an operation or a number.
+
+- If the node is a binary operation (+, -), it will have two children, the left and right operands.
+- If the node is a unary operation (-), it will have one child, the operand, stored in the right child.
+- If the node is a number, it will store a value and have no children. This is a leaf node.
+
+import Collapse from "@site/src/components/Collapse";
+
+<Collapse title="Learn more about how the parser works">
+
+Our parser will step through the lexer's tokens one at a time, and build the AST as it goes. It utilizes recursion with references to the previous node to build the tree. Our parser has two main functions:
+
+1. `parse(prevNode)` Which will parse through the entire expression until it reaches the end of the tokens.
+2. `getNextNode(prevNode)` Which will parse only to the next node, and return it to the caller.
+
+For example `1 + 2 -3` will be parsed as follows:
+
+1. `1` is a number, so we create a new node with value `1`.
+2. We still have more tokens, so we call parse recursively with the previous node being our new `1` node.
+3. `+` is a binary operation, so we create a new node with value `+`, and set the left child to the previous node (`1`). We then set the right child as the result of a recursive call to `getNextNode`.
+4. `2` is a number, so we create a new node with value `2`. This is returned as the right child of the `+` node. This then return the `+` node back to the `parse` function that called it.
+5. We still have more tokens, so `parse` is called recursively with the previous node being our new `+` node.
+6. `-` is a binary operation, so we create a new node with value `-`, and set the left child to the previous node. We then set the right child as the result of a recursive call to `getNextNode`.
+7. `3` is a number, so we create a new node with value `3`. This is returned as the right child of the `-` node. This then return the `-` node back to the `parse` function that called it.
+8. We are out of tokens, so we return the `-` node back to the `parse` function that called it.
+9. We keep returning the `-` node back to the `parse` function that called it, until we return to the original `parse` call, which returns the `-` node to the original caller.
+
+</Collapse>
+
+<TextInput />
+<ParserView />
+
+### Interpreter
+
+import InterpreterView from "../src/components/basic-calculator/InterpreterView";
+
+The interpreter is the simplest part of this problem, we just need to evaluate the AST. We can do this recursively, by evaluating the left and right children, and then applying the operation to the result.
+
+<TextInput />
+<InterpreterView />
