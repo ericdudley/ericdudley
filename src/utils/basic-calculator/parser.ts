@@ -24,6 +24,22 @@ export class Parser {
         });
       }
 
+      if (token === "*") {
+        return new Node({
+          type: "mul",
+          left: prevNode,
+          right: this.getNextNode(null),
+        });
+      }
+
+      if (token === "/") {
+        return new Node({
+          type: "div",
+          left: prevNode,
+          right: this.getNextNode(null),
+        });
+      }
+
       if (token === "-") {
         if (prevNode) {
           return new Node({
@@ -37,6 +53,17 @@ export class Parser {
             right: this.getNextNode(null),
           });
         }
+      }
+
+      if (token === "(") {
+        return new Node({
+          type: "par",
+          right: this.parse(prevNode),
+        });
+      }
+
+      if (token === ")") {
+        return null;
       }
     } else {
       return new Node({
@@ -91,9 +118,39 @@ export class Parser {
         };
       }
 
+      if (node.type === "mul") {
+        return {
+          name: "*",
+          key: uuid(),
+          children: [node.left, node.right]
+            .map((child) => getTree(child))
+            .filter((child) => !!child),
+        };
+      }
+
+      if (node.type === "div") {
+        return {
+          name: "/",
+          key: uuid(),
+          children: [node.left, node.right]
+            .map((child) => getTree(child))
+            .filter((child) => !!child),
+        };
+      }
+
       if (node.type === "neg") {
         return {
           name: "-1 *",
+          key: uuid(),
+          children: [node.right]
+            .map((child) => getTree(child))
+            .filter((child) => !!child),
+        };
+      }
+
+      if (node.type === "par") {
+        return {
+          name: "()",
           key: uuid(),
           children: [node.right]
             .map((child) => getTree(child))

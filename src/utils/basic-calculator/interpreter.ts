@@ -41,6 +41,25 @@ export class Interpreter {
         step = `${left} - ${right}`;
         break;
       }
+      case "par": {
+        const right = this._interpret(root.right, steps);
+        val = right;
+        break;
+      }
+      case "mul": {
+        const left = this._interpret(root.left, steps);
+        const right = this._interpret(root.right, steps);
+        val = left * right;
+        step = `${left} * ${right}`;
+        break;
+      }
+      case "div": {
+        const left = this._interpret(root.left, steps);
+        const right = this._interpret(root.right, steps);
+        val = left / right;
+        step = `${left} / ${right}`;
+        break;
+      }
       default:
         throw new Error(`Unknown node type ${root.type}`);
     }

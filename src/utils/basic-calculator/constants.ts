@@ -1,4 +1,4 @@
-export const OPERATIONS = new Set(["+", "-", "(", ")"]);
+export const OPERATIONS = new Set(["+", "-", "*", "/", "(", ")"]);
 export const DIGITS = new Set([
   "1",
   "2",
