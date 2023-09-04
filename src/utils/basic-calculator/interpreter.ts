@@ -1,14 +1,17 @@
-import { Parser } from "./parser";
-import { NullableNode } from "./node";
+import { Parser } from './parser';
+import { NullableNode } from './node';
+import { formatNumber } from './constants';
 
 export class Interpreter {
   parser: Parser;
+
+  error?: string;
 
   constructor(parser: Parser) {
     this.parser = parser;
   }
 
-  _interpret(root: NullableNode, steps: string[]): number {
+  recursiveInterpret(root: NullableNode, steps: string[]): number {
     if (!root) {
       return 0;
     }
@@ -17,65 +20,68 @@ export class Interpreter {
     let step: string;
 
     switch (root.type) {
-      case "val": {
+      case 'val': {
         val = root.val;
         break;
       }
-      case "neg": {
-        const right = this._interpret(root.right, steps);
+      case 'neg': {
+        const right = this.recursiveInterpret(root.right, steps);
         val = -1 * right;
-        step = `-1 * ${right}`;
+        step = `-1 * ${formatNumber(right)}`;
         break;
       }
-      case "add": {
-        const left = this._interpret(root.left, steps);
-        const right = this._interpret(root.right, steps);
+      case 'add': {
+        const left = this.recursiveInterpret(root.left, steps);
+        const right = this.recursiveInterpret(root.right, steps);
         val = left + right;
-        step = `${left} + ${right}`;
+        step = `${formatNumber(left)} + ${formatNumber(right)}`;
         break;
       }
-      case "sub": {
-        const left = this._interpret(root.left, steps);
-        const right = this._interpret(root.right, steps);
+      case 'sub': {
+        const left = this.recursiveInterpret(root.left, steps);
+        const right = this.recursiveInterpret(root.right, steps);
         val = left - right;
-        step = `${left} - ${right}`;
+        step = `${formatNumber(left)} - ${formatNumber(right)}`;
         break;
       }
-      case "par": {
-        const right = this._interpret(root.right, steps);
+      case 'par': {
+        const right = this.recursiveInterpret(root.right, steps);
         val = right;
         break;
       }
-      case "mul": {
-        const left = this._interpret(root.left, steps);
-        const right = this._interpret(root.right, steps);
+      case 'mul': {
+        const left = this.recursiveInterpret(root.left, steps);
+        const right = this.recursiveInterpret(root.right, steps);
         val = left * right;
-        step = `${left} * ${right}`;
+        step = `${formatNumber(left)} * ${formatNumber(right)}`;
         break;
       }
-      case "div": {
-        const left = this._interpret(root.left, steps);
-        const right = this._interpret(root.right, steps);
+      case 'div': {
+        const left = this.recursiveInterpret(root.left, steps);
+        const right = this.recursiveInterpret(root.right, steps);
         val = left / right;
-        step = `${left} / ${right}`;
+        step = `${formatNumber(left)} / ${formatNumber(right)}`;
         break;
       }
       default:
-        throw new Error(`Unknown node type ${root.type}`);
+        this.error = `Unknown node type: ${root.type}`;
     }
 
     if (step) {
-      steps.push(`${step} = ${val}`);
+      steps.push(`${step} = ${formatNumber(val)}`);
     }
     return val;
   }
 
-  interpret(): { steps: string[]; value: number } {
+  interpret(): { steps: string[]; value: number; error?: string } {
+    this.error = '';
     const steps = [];
-    const value = this._interpret(this.parser.parse(null), steps);
+    const { result } = this.parser.parse();
+    const value = this.recursiveInterpret(result, steps);
     return {
       value,
       steps,
+      error: this.error,
     };
   }
 }

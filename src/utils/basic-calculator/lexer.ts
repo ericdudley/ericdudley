@@ -1,15 +1,19 @@
-import { DIGITS, OPERATIONS } from "./constants";
+import { DIGITS, OPERATIONS } from './constants';
 
 export class Lexer {
+  inputText: string;
+
   tokens: string[];
+
   idx: number;
 
   constructor(inputText: string) {
+    this.inputText = inputText;
     this.idx = 0;
     this.tokens = [];
 
     let i = 0;
-    let currNum = "";
+    let currNum = '';
 
     while (i < inputText.length) {
       while (DIGITS.has(inputText[i])) {
@@ -19,7 +23,7 @@ export class Lexer {
 
       if (currNum.length > 0) {
         this.tokens.push(currNum);
-        currNum = "";
+        currNum = '';
       }
 
       if (OPERATIONS.has(inputText[i])) {
@@ -33,23 +37,27 @@ export class Lexer {
   getNextToken() {
     if (this.idx === this.tokens.length) {
       return null;
-    } else {
-      const token = this.tokens[this.idx];
-      this.idx += 1;
-      return token;
     }
+    const token = this.tokens[this.idx];
+    this.idx += 1;
+    return token;
   }
 
   peekNextToken() {
     if (this.idx === this.tokens.length) {
       return null;
-    } else {
-      const token = this.tokens[this.idx];
-      return token;
     }
+    const token = this.tokens[this.idx];
+    return token;
   }
 
   hasNextToken() {
     return this.idx < this.tokens.length;
+  }
+
+  isValid() {
+    return Array.from(this.inputText).every(
+      (c) => DIGITS.has(c) || OPERATIONS.has(c) || c === ' ',
+    );
   }
 }

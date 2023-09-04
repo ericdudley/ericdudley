@@ -16,7 +16,8 @@
       "no-param-reassign": 0,
       "no-use-before-define": 0,
       "no-loop-func": 0,
-      "import/no-unresolved": [ 2, {"ignore": ["^@theme", "^@docusaurus", "^@site"]}]
+      "import/no-unresolved": [ 2, {"ignore": ["^@theme", "^@docusaurus", "^@site"]}],
+      "no-nested-ternary": 0
     },
     "settings": {
       "import/resolver": {

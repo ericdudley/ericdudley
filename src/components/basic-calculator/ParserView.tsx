@@ -1,18 +1,22 @@
-import React from "react";
-import { AnimatedTree } from "react-tree-graph";
-import "react-tree-graph/dist/style.css";
-import styles from "./ParserView.module.css";
-import { useBasicCalculatorStore } from "../../utils/basic-calculator/store";
+import React from 'react';
+import { AnimatedTree } from 'react-tree-graph';
+import 'react-tree-graph/dist/style.css';
+import AutoSizer from 'react-virtualized-auto-sizer';
+import styles from './ParserView.module.css';
+import { useBasicCalculatorStore } from '../../utils/basic-calculator/store';
 
-import AutoSizer from "react-virtualized-auto-sizer";
+import StatusText from './StatusText';
+
 export default function ParserView() {
-  const treeData = useBasicCalculatorStore((state) => state.getTreeData());
-
-  console.log(treeData);
+  const { treeData, error } = useBasicCalculatorStore((state) => state.getTreeViewData());
 
   return (
-    <div className="min-h-[512px] w-full">
-      {/* <ReactFlow nodes={initialNodes} edges={initialEdges} /> */}
+    <div className="min-h-[50vh] w-full">
+      <StatusText
+        action="Parse"
+        status={error ? 'failure' : 'success'}
+        error={error}
+      />
       {treeData && (
         <AutoSizer>
           {({ width, height }) => (

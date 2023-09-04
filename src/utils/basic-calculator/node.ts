@@ -5,9 +5,12 @@ export class Node {
     });
   }
 
-  type: "val" | "add" | "sub" | "neg" | "par" | "mul" | "div"
+  type: 'val' | 'add' | 'sub' | 'neg' | 'par' | 'mul' | 'div';
+
   val?: number;
+
   left?: Node;
+
   right?: Node;
 
   getVal: () => number;

@@ -1,16 +1,37 @@
-.text {
-  stroke: white;
-  fill: white;
-  font-size: 2rem;
-  transform: translate(-15px, 4px);
-}
+[data-theme="light"] {
+  .text {
+    stroke: black;
+    fill: black;
+    font-size: 2rem;
+    transform: translate(-15px, 4px);
+  }
 
-.node {
+  .node {
     fill: transparent;
     stroke: transparent;
+  }
+
+  .path {
+    stroke: #cccccc;
+    fill: #eeeeee;
+  }
 }
 
-.path {
+[data-theme="dark"] {
+  .text {
+    stroke: white;
+    fill: white;
+    font-size: 2rem;
+    transform: translate(-15px, 4px);
+  }
+
+  .node {
+    fill: transparent;
+    stroke: transparent;
+  }
+
+  .path {
     stroke: #666666;
     fill: #222222;
+  }
 }
