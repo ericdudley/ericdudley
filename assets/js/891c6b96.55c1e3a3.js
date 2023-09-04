@@ -1,1 +1,0 @@
-"use strict";(self.webpackChunkericdudley=self.webpackChunkericdudley||[]).push([[993],{3654:e=>{e.exports=JSON.parse('{"label":"puzzles","permalink":"/blog/tags/puzzles","allTagsPath":"/blog/tags","count":1}')}}]);
