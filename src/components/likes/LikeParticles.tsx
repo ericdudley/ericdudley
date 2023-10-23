@@ -50,7 +50,7 @@ const LikeParticles: React.FC<LikeParticlesProps> = ({
         }),
         enter: (item, idx) => ({
             opacity: 1,
-            top: -80,
+            top: -80 + Math.random() * -40,
             left: getLeftOffset(item, containerRef.current?.getBoundingClientRect()?.width ?? 0),
         }),
         leave: (item, idx) => ({
