@@ -11,8 +11,12 @@ interface Particle {
     key: number;
 }
 
-function getLeftOffset(item: Particle, containerWidth: number): number {
-    return Math.sin(item.key * (Math.PI / 16)) * containerWidth * 0.5;
+function getStartLeftOffset(item: Particle, containerWidth: number): number {
+    return Math.random() * containerWidth - containerWidth / 2;
+}
+
+function getEndLeftOffset(item: Particle, containerWidth: number): number {
+    return Math.random() * containerWidth * 4 - containerWidth * 2;
 }
 
 const LikeParticles: React.FC<LikeParticlesProps> = ({
@@ -44,14 +48,16 @@ const LikeParticles: React.FC<LikeParticlesProps> = ({
 
     const transitions = useTransition(particles, {
         from: (item, idx) => ({
-            opacity: 0,
+            opacity: 1,
             top: 0,
-            left: getLeftOffset(item, containerRef.current?.getBoundingClientRect()?.width * 0.5 ?? 0),
+            left: getStartLeftOffset(item, containerRef.current?.getBoundingClientRect()?.width ?? 0),
+            transform: "scale(1) translate(-50%, -100%)",
         }),
         enter: (item, idx) => ({
-            opacity: 1,
+            opacity: 0,
             top: -80 + Math.random() * -40,
-            left: getLeftOffset(item, containerRef.current?.getBoundingClientRect()?.width ?? 0),
+            left: getEndLeftOffset(item, containerRef.current?.getBoundingClientRect()?.width ?? 0),
+            transform: "scale(0.1) translate(-50%, -100%)",
         }),
         leave: (item, idx) => ({
             opacity: 0,
