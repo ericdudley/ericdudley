@@ -110,7 +110,7 @@ export default function Home(): React.ReactElement {
           <LineItem
             indent={6}
             sections={[
-              { text: 'and I ' },
+              { text: 'and Iffff ' },
               { text: 'write sometimes', link: '/blog' },
               { text: '.' },
             ]}
