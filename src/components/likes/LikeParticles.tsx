@@ -1,5 +1,9 @@
-import React, { RefObject, useEffect, useRef, useState } from "react";
-import { animated, useTransition } from "react-spring";
+/* eslint-disable */
+
+import React, {
+  RefObject, useEffect, useRef, useState,
+} from 'react';
+import { animated, useTransition } from 'react-spring';
 
 interface LikeParticlesProps {
     likeCount: number;
@@ -12,65 +16,63 @@ interface Particle {
 }
 
 function getLeftOffset(item: Particle, containerWidth: number): number {
-    return Math.sin(item.key * (Math.PI / 16)) * containerWidth * 0.5;
+  return Math.sin(item.key * (Math.PI / 16)) * containerWidth * 0.5;
 }
 
 const LikeParticles: React.FC<LikeParticlesProps> = ({
-    likeCount,
-    containerRef,
-    incrementLikes,
+  likeCount,
+  containerRef,
+  incrementLikes,
 }) => {
-    const [particles, setParticles] = useState<Particle[]>([]);
-    const prevLikeCount = usePrevious(likeCount);
-    const idRef = useRef(0);
+  const [particles, setParticles] = useState<Particle[]>([]);
+  const prevLikeCount = usePrevious(likeCount);
+  const idRef = useRef(0);
 
-    function usePrevious<T>(value: T): T | undefined {
-        const ref = useRef<T>();
-        useEffect(() => {
-            ref.current = value;
-        }, [value]);
-        return ref.current;
-    }
-
+  function usePrevious<T>(value: T): T | undefined {
+    const ref = useRef<T>();
     useEffect(() => {
-        if (likeCount > (prevLikeCount ?? 0)) {
-            setParticles((prev) =>
-                [...Array(likeCount - (prevLikeCount ?? 0))]
-                    .map(() => ({ key: idRef.current++ }))
-                    .concat(prev)
-            );
-        }
-    }, [likeCount, prevLikeCount]);
+      ref.current = value;
+    }, [value]);
+    return ref.current;
+  }
 
-    const transitions = useTransition(particles, {
-        from: (item, idx) => ({
-            opacity: 0,
-            top: 0,
-            left: getLeftOffset(item, containerRef.current?.getBoundingClientRect()?.width * 0.5 ?? 0),
-        }),
-        enter: (item, idx) => ({
-            opacity: 1,
-            top: -80,
-            left: getLeftOffset(item, containerRef.current?.getBoundingClientRect()?.width ?? 0),
-        }),
-        leave: (item, idx) => ({
-            opacity: 0,
-            config: {
-                duration: 100,
-            },
-        }),
-        keys: particles.map((particle) => particle.key),
-        onRest: () => setParticles([]),
-        trail: 5,
-        config: {
-            duration: 500,
-        },
-        onDestroyed: () => {
-            incrementLikes?.(1);
-        },
-    });
+  useEffect(() => {
+    if (likeCount > (prevLikeCount ?? 0)) {
+      setParticles((prev) => [...Array(likeCount - (prevLikeCount ?? 0))]
+        .map(() => ({ key: idRef.current++ }))
+        .concat(prev));
+    }
+  }, [likeCount, prevLikeCount]);
 
-    return (
+  const transitions = useTransition(particles, {
+    from: (item, idx) => ({
+      opacity: 0,
+      top: 0,
+      left: getLeftOffset(item, containerRef.current?.getBoundingClientRect()?.width * 0.5 ?? 0),
+    }),
+    enter: (item, idx) => ({
+      opacity: 1,
+      top: -80,
+      left: getLeftOffset(item, containerRef.current?.getBoundingClientRect()?.width ?? 0),
+    }),
+    leave: (item, idx) => ({
+      opacity: 0,
+      config: {
+        duration: 100,
+      },
+    }),
+    keys: particles.map((particle) => particle.key),
+    onRest: () => setParticles([]),
+    trail: 5,
+    config: {
+      duration: 500,
+    },
+    onDestroyed: () => {
+      incrementLikes?.(1);
+    },
+  });
+
+  return (
         <div className="absolute top-1/2  left-1/2 transform -translate-x-1/2 -translate-y-1/2">
             {transitions((style, item) => (
                 <animated.div
@@ -102,7 +104,7 @@ const LikeParticles: React.FC<LikeParticlesProps> = ({
                 </animated.div>
             ))}
         </div>
-    );
+  );
 };
 
 export default LikeParticles;

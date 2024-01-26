@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 
 export default function HowMuchTipPrivacyPolicy() {
   return (
@@ -49,7 +49,7 @@ export default function HowMuchTipPrivacyPolicy() {
         <h2>Contact Information</h2>
         <p>
           For any questions or concerns about this privacy policy, please
-          contact us at{" "}
+          contact us at{' '}
           <a href="mailto:contact@ericdudley.com">contact@ericdudley.com</a>.
         </p>
 
