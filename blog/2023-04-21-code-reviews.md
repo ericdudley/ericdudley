@@ -13,7 +13,7 @@ tags:
 
 tldr; Focus on adopting a healthy code review mindset, rather than specific tips, to build a culture of knowledge sharing and improve code quality.
 
-As a software engineer with several years of experience, I've participated in countless code reviews, both as a reviewer and a PR author. I've seen the good, the bad, and the ugly when it comes to the code review process. In this blog post, I'll share my insights on the importance of a healthy code review mindset and how you can adopt it to make your code reviews more effective, efficient, and enjoyable.
+As a software engineer, I've participated in countless code reviews, both as a reviewer and a PR author. I've seen the good, the bad, and the ugly when it comes to the code review process. In this blog post, I'll share my insights on the importance of a healthy code review mindset and how you can adopt it to make your code reviews more effective, efficient, and enjoyable.
 
 <!--truncate-->
 
