@@ -1,1 +1,0 @@
-"use strict";(self.webpackChunkericdudley=self.webpackChunkericdudley||[]).push([[1648],{2476:e=>{e.exports=JSON.parse('{"permalink":"/blog/tags/software-development","page":1,"postsPerPage":10,"totalPages":1,"totalCount":3,"blogDescription":"Blog","blogTitle":"Blog"}')}}]);
