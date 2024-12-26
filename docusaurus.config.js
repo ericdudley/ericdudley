@@ -116,7 +116,10 @@ const config = {
           src: "img/me.png",
         },
         title: "Eric Dudley",
-        items: [{ to: "/blog", label: "Blog", position: "left" }],
+        items: [
+          { to: "/blog", label: "Blog", position: "left" },
+          { to: "/projects", label: "Projects", position: "left" },
+        ],
       },
       footer: {
         style: "light",
