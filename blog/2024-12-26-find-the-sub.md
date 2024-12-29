@@ -3,130 +3,140 @@ slug: find-the-sub
 title: "Find the Sub"
 authors: me
 tags: [side-project]
+draft: true
 ---
 
 # Find The Sub
 
-#### **Do you have a Reddit post that you've been working on but not sure where to post it?**
+### **Ever worked on a Reddit post and wondered where it belongs?**  
+### **Or maybe you’re searching for a specific subreddit but can’t quite find it?**  
 
-#### **Perhaps you're looking for a subreddit but not sure if it exists or how to find it?**
+**Find the Sub** might be the tool you didn’t know you needed. It’s simple, effective, and helps you navigate the maze of Reddit subreddits.
 
-### Find the Sub is the tool you've been waiting for, maybe, probably not really, but it kind of does that.
+---
 
-# What is Find the Sub?
+## What is Find the Sub?
 
-Find the sub is a simple tool that takes in a potential reddit post title:
+Find the Sub is a lightweight tool that takes your potential Reddit post title—something like:
 
 > Why did I get laid off right before the holidays?
 
-and returns a list of a similar posts, and a list of similar subreddits. You can then click on the links to the posts/subreddits and do what you will.
+—and returns:
+- A list of similar posts  
+- A list of subreddits where such topics are discussed  
 
-# How does it work?
+From there, you can click on any of the links to posts or subreddits and decide whether you want to join the conversation.
 
-This is where it gets interesting, at least for me. I used this project to learn more about LLM embeddings and vector databases. 
+---
 
-## Embeddings
+## How Does It Work?
 
-At a high level, this is the general three steps in providing similarity search over a dataset using embeddings.
+I used this project as an opportunity to learn about **large language model (LLM) embeddings** and **vector databases**. In practice, it follows three main steps:
 
-The first step is to have a dataset of embeddings (vectors paired with their related titles/subreddits metadata). 
+1. **Dataset Preparation**: Collect and store Reddit post titles, subreddits, and their corresponding vector embeddings.  
+2. **Embedding Generation**: Whenever a user enters a title, generate its embedding on the fly using the same model.  
+3. **Similarity Search**: Compare the user’s embedding to the stored dataset and display the most similar posts and subreddits.
 
-
-The second step is to have the ability to generate an embedding for a given search query on the fly. 
-
-The third step is to take your search query embedding, and compare it to your dataset of embeddings, to find the most similar, and then show this result to the user.
+---
 
 ## Dataset Generation
 
-The dataset has a structure like the following:
+The dataset looks roughly like this:
+
+```json
+{
+  "post_id": "t3_abcdef",
+  "title": "Why did I get laid off right before the holidays?",
+  "subreddit": "AskHR",
+  "embedding": [0.1, 0.2, ..., 0.9]
+}
 ```
-post_id: string
-title: string
-subreddit: string
-vector: float[]
-```
 
-Each record represents a single Reddit post and its embedding.
+Each record represents a single Reddit post, its metadata, and its embedding.
 
-### Reddit post gathering
+### Reddit Post Gathering
 
-I utilized Reddit's developer API to gather the posts in two steps.
+1. Use Reddit’s developer API to fetch a list of the top “hot” subreddits (limited to the top 2000).
+2. For each subreddit, retrieve a combination of top “all” and “hot” posts (limited to 150 and 50 posts, respectively).
+3. Save the relevant data (post ID, title, subreddit) to a file named `[subreddit].pickle`. This format makes loading the data simpler in the next step.
 
-1. Fetch the top "hot" subreddits (Limited to top 2000)
-2. For each subreddit, fetch a combination of top "all" and "hot" posts (Limited to 150 and 50 respectively).
-3. Save the post id, title, and subreddit name to a file with name `[subreddit].pickle` (pickle because it simplifies the loading process later in the pipeline)
+### Embedding Calculation
 
-### Embedding calculation
+1. Load each `[subreddit].pickle` file into a DataFrame.
+2. Split the post titles into batches, then generate embeddings using the OpenAI embedding endpoint.  
+3. Merge the new embeddings with the original post data.  
+4. Save the updated data (now including vectors) back to the same `[subreddit].pickle` file.
 
-1. For each `[subreddit].pickle` file, load the posts into a dataframee.
-2. Chunk the post titles, and submit the chunks to the OpenAI embedding generation endpoint, which returns a separate embedding for each title.
-3. Merge the embedding vectors with their matching post titles.
-4. Once all posts have embeddings calculated, save the dataframe back to the `[subreddit].pickle` file.
+---
 
-## Approach #1 Simple similarity search 
+## Approach #1: Simple Similarity Search
 
-My initial approach was to implement my own similarity search algorithm, utilizing cosine distance, with the following algorithm.
+At first, I used a self-managed similarity search based on cosine distance:
 
-1. Receive user's input post title, and compute an embedding using the same OpenAI endpoint.
-2. Load all of the `[subreddit].pickle` files into memory, and compute a new column in the dataframe containing the cosine distance between the input embedding and the dataset post's embedding.
-3. Sort by this distance, resulting in the head of the list representing the most semantically similar posts, and the tail being the least similar.
-4. Group by subreddit, and calculate the mean of all similarity scores.
-5. Sort subreddits by this mean, and return the top 5 subreddits.
+1. Compute the embedding for the user’s query using the same OpenAI endpoint.
+2. Load all `[subreddit].pickle` files, calculate the cosine distance between the query embedding and each post’s embedding, and sort by distance.
+3. The top of the sorted list represents the most semantically similar posts.
+4. Group by subreddit, compute the mean similarity score, then pick the top 5 subreddits based on these scores.
 
-### Pros
-
-- Simple algorithm
+**Pros**  
+- Straightforward algorithm.  
 - Covers the entire dataset.
 
-### Cons
+**Cons**  
+- High memory usage, since the entire dataset is loaded for each query.  
+- Slower search times, which scales poorly for large datasets.
 
-- High memory usage, have to load the entire dataset into memory.
-- Slow search, each search requires calculating a distance for the entire dataset. This won't scale well for large datasets.
+This approach worked great locally but wasn’t very scalable when I deployed it. Sure, you could pay for more compute and memory, but I wanted to try a purpose-built vector database.
 
-### Why I didn't use it?
+---
 
-Ultimately this approach gave me great results locally, but showed it's lack of ability to scale and high memory requirements when I tried to deploy the application to the cloud. While you can always just pay for the increased memory/compute, I figured I should try and leverage some existing tech that has been built for this use case, vector databases.
+## Approach #2: Hosted Vector Database
 
-## Approach #2 Hosted Vector Database
-
-A vector database is optimized for storing and querying massive datasets of vectors + metadata. This perfectly matches my scenario, so I looked for a hosted vector database.
-
-I landed on `Zelliz`, which is a hosted deployment of the open source vector database `Milvus`. Its free tier supports roughly ~1 million vectors and ample limits for querying, which would work perfectly for the scope of this side project.
+A vector database is optimized for storing and querying large collections of vector embeddings alongside metadata. This fits my use case perfectly, so I turned to **Zilliz**, a hosted deployment of the open-source vector database Milvus. Its free tier allows up to around one million vectors, which is more than enough for my side project.
 
 ### Data Ingest
 
-Data ingest was actually super simple, utilizing a batch ingest REST endpoint that support batching 100s of entries in a single query. The approach:
+Uploading the data to Zilliz was straightforward thanks to its batch ingest REST endpoint:
+1. Load the posts and embeddings from each `[subreddit].pickle` file.
+2. Batch them into chunks that meet Zilliz’s schema requirements.
+3. Send them off in bulk using the REST endpoint.
 
-
-1. For each `[subreddit].pickle` file, load the posts + embeddings.
-2. Chunk the posts, transform them to match the Zelliz schema, and publish the data.
-
-The data becomes immediately available for basic visualization and querying using the Zelliz web UI. 
+Once in Zilliz, the data is instantly available for simple visualization and querying in the web UI.
 
 ### Querying
 
-The querying is similar, utilizing an HTTP endpoint, with parameters for the number of Top-K results, the input embeding, and the metadata fields you want included with each entry in the response.
+To query, I call Zilliz’s HTTP endpoint with parameters like:
+- The number of top-K results  
+- The embedding of the query  
+- Metadata fields to include in the response  
 
 ### Results
 
-Initially the quality of the results for this approach was significantly less. I believe this is because I am limited to the top-1000 similar posts, which sounds like a lot of posts, but leads to a problem when aggregating by subreddit.
+Initially, the results quality was a bit off. I was only fetching the top 1000 most similar posts. That sounds like plenty, but when grouping by subreddit, it can skew the average similarity score. In the simple approach (#1), all lower-similarity posts in a given subreddit would bring down that subreddit’s average score. With approach #2, low-similarity posts never make it into the top-K, so the average might be misleadingly high.
 
-In approach #1, even if a single post in a mostly unrelated subreddit has a high similarity score, the mean will be brought down by all of the other low similarity scores from that subreddit.
+To address this, I experimented with different aggregation strategies—penalizing subreddits for having too few similar posts, or factoring in the rank of each post rather than just its similarity score.
 
-In approach #2, all of the other low similarity posts won't be in the top-K results, and so that subreddits aggregated mean will be higher than it really should be.
+---
 
-This can be mitigated by utilizing different / multiple aggregation metrics, for example, by punishing subreddits for having a low count or a high rank, in addition to the value of the similarity score itself.
+## Putting It All Together
 
-# Putting it all together
+I built a basic Django app that has:
+- A single HTTP endpoint for querying  
+- A simple front-end template that uses XHR calls to fetch and display results  
 
-I created a basic Django app, with a single HTTP endpoint for querying, and a single template that queries the query endpoint using XHR's, dynamically showing the results on the single page.
+### Query Endpoint
 
-## Query endpoint
+The query endpoint:
+1. Computes the input embedding  
+2. Queries Zilliz for the most similar posts  
+3. Aggregates the results by subreddit and ranks them using a blend of average similarity, maximum similarity, count, and rank to refine the results
 
-The query endpoint first calculates the input embedding, queries for similar posts using the Zelliz query endpoint, and then aggregates the results by subreddit and ranks them by a weighted combination of various metrics mean, max, count, and rank.
+---
 
-## Keeping the dataset fresh
+## Keeping the Dataset Fresh
 
-In order to keep the dataset fresh, I would need to run the data ingest pipeline semi-frequently. It has built in some optimizations, for skipping posts that we already have an embedding for.
+To keep the dataset relevant over time, I can run the data-ingestion pipeline regularly. It can skip posts that already have embeddings, making incremental updates easy. Ensuring subreddits are relatively balanced in the dataset helps avoid biases toward more popular subreddits.
 
-It's also rather important that subreddits are mostly equally represented in the dataset, to ensure that the ranking metrics aren't biased by more popular subreddits, or just subreddits that have more posts in the dataset. 
+---
+
+Find the Sub may not be a groundbreaking revolution, but it’s been fun to build. It’s a handy side project that let me dig into embeddings, vector databases, and the intricacies of data querying at scale.
