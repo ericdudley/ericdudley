@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunkericdudley=self.webpackChunkericdudley||[]).push([[7670],{9566:s=>{s.exports=JSON.parse('{"label":"cash-compass","permalink":"/blog/tags/cash-compass","allTagsPath":"/blog/tags","count":1}')}}]);
