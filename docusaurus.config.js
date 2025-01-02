@@ -1,8 +1,9 @@
 // @ts-check
 // Note: type annotations allow type checking and IDEs autocompletion
 
-const lightCodeTheme = require("prism-react-renderer/themes/github");
-const darkCodeTheme = require("prism-react-renderer/themes/dracula");
+const prismReactRenderer = require("prism-react-renderer");
+const lightCodeTheme = prismReactRenderer.themes.github;
+const darkCodeTheme = prismReactRenderer.themes.synthwave84; 
 
 const LINKEDIN_URL = "https://www.linkedin.com/in/eric-dudley-894721106/";
 const GITHUB_URL = "https://github.com/ericdudley";
