@@ -1,0 +1,27 @@
+{
+  "site": {
+    "title": "p<span class=\"name-emphasis\">ERIC</span>o<span class=\"name-emphasis\">D</span>ic",
+    "author": "ERIC DUDLEY",
+    "description": "A minimal personal website and blog"
+  },
+  "directories": {
+    "output": "public",
+    "posts": "posts",
+    "pages": "pages"
+  },
+  "build": {
+    "clean_output": true,
+    "create_blog_page": true,
+    "mode": "dev"
+  },
+  "styling": {
+    "max_width": "600px",
+    "font_family": "monospace",
+    "link_color": "#0066CC",
+    "visited_color": "#551A8B",
+    "content_background": "#ffffff",
+    "header_border_color": "#ccc",
+    "text_color": "#333",
+    "meta_color": "#666"
+  }
+}

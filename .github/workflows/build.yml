@@ -1,34 +1,47 @@
-name: Build Website
+# Workflow for building and deploying static content to GitHub Pages
+name: Build and Deploy to Pages
+
 on:
+  # Runs on pushes targeting the default branch
   push:
-    branches-ignore:
-      - gh-pages
+    branches: ["main"]
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+# Sets permissions of the GITHUB_TOKEN to allow deployment to GitHub Pages
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Allow only one concurrent deployment, skipping runs queued between the run in-progress and latest queued.
+# However, do NOT cancel in-progress runs as we want to allow these production deployments to complete.
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
+
 jobs:
-  build:
+  # Build and deploy job
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
     steps:
-      - name: Check out repository code
-        uses: actions/checkout@v2
-      - name: Setup Node.js
-        uses: actions/setup-node@v3
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Set up Go
+        uses: actions/setup-go@v5
+      - name: Generate production build
+        run: make generate-prod
+      - name: Setup Pages
+        uses: actions/configure-pages@v5
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
         with:
-          node-version: 20
-      - name: Enable corepack
-        run: corepack enable
-      - name: Use Yarn 3
-        run: yarn set version stable
-      - name: Install deps
-        if: steps.cache-dependencies.outputs.cache-hit != 'true'
-        run: yarn install --immutable
-      - name: Lint
-        run: yarn lint
-      - name: Build for production
-        run: yarn build
-      - name: Create CNAME file
-        run: echo "ericdudley.com" > ./build/CNAME
-      - name: Deploy
-        if: ${{ github.ref == 'refs/heads/main' }}
-        uses: peaceiris/actions-gh-pages@v3
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./build
+          # Upload public directory
+          path: 'public'
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
