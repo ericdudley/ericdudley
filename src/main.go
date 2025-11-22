@@ -20,6 +20,7 @@ func loadConfig() (Config, error) {
 	config.Directories.Output = "public"
 	config.Directories.Posts = "posts"
 	config.Directories.Pages = "pages"
+	config.Directories.Static = "static"
 	config.Build.CleanOutput = true
 	config.Build.CreateBlogPage = true
 	config.Build.Mode = "dev"
@@ -52,6 +53,7 @@ func loadConfig() (Config, error) {
 			Output string `json:"output"`
 			Posts  string `json:"posts"`
 			Pages  string `json:"pages"`
+			Static string `json:"static"`
 		} `json:"directories"`
 		Build struct {
 			CleanOutput    bool   `json:"clean_output"`
@@ -155,6 +157,12 @@ func main() {
 		if err != nil {
 			log.Fatal("Error generating page:", err)
 		}
+	}
+
+	// Copy static files
+	err = copyStaticFiles(config)
+	if err != nil {
+		log.Fatal("Error copying static files:", err)
 	}
 
 	fmt.Printf("Generated %d posts and %d pages to ./%s/\n", len(posts), len(pages), config.Directories.Output)

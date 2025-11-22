@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"html/template"
+	"regexp"
 	"strings"
 )
 
@@ -35,10 +36,12 @@ func (cp *ContentProcessor) ProcessContent(rawContent string) string {
 	// Step 4: Process markdown-style headings
 	content = cp.processHeadings(content)
 
-	// Step 4: Future processing steps will go here
-	// - More markdown processing (links, emphasis, etc.)
+	// Step 5: Process markdown-style links
+	content = cp.processLinks(content)
+
+	// Future processing steps will go here
+	// - More markdown processing (emphasis, lists, code blocks, etc.)
 	// - Custom syntax extensions
-	// - Link processing
 	// - Code highlighting
 	// - Image handling
 	// etc.
@@ -162,6 +165,19 @@ func (cp *ContentProcessor) processHeadingLine(line string) string {
 	// Convert to HTML heading tag
 	headingTag := fmt.Sprintf("h%d", hashCount)
 	return fmt.Sprintf("<%s>%s</%s>", headingTag, headingText, headingTag)
+}
+
+// processLinks converts markdown-style links [text](url) to HTML anchor tags
+func (cp *ContentProcessor) processLinks(content string) string {
+	// Regex pattern for markdown links: [text](url)
+	// Matches [link text](https://example.com) and converts to <a> tags
+	linkPattern := regexp.MustCompile(`\[([^\]]+)\]\(([^\)]+)\)`)
+
+	// Replace all matches with HTML anchor tags
+	// External links open in new tab with security attributes
+	result := linkPattern.ReplaceAllString(content, `<a href="$2" target="_blank" rel="noopener noreferrer">$1</a>`)
+
+	return result
 }
 
 // ProcessPostContent processes content specifically for blog posts

@@ -13,6 +13,7 @@ type Config struct {
 		Output string `json:"output"`
 		Posts  string `json:"posts"`
 		Pages  string `json:"pages"`
+		Static string `json:"static"`
 	} `json:"directories"`
 	Build struct {
 		CleanOutput    bool   `json:"clean_output"`

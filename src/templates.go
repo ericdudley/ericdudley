@@ -66,7 +66,7 @@ const globalCSS = `
 
         a {
             color: #00ff41;
-            text-decoration: none;
+            text-decoration: underline;
             text-shadow: 0 0 3px #00ff41;
             transition: all 0.3s ease;
         }
@@ -208,7 +208,10 @@ const navigation = `
 <a href="{{$.BasePath}}blog.html">Blog</a>
 {{range $.Pages}}{{if ne .Slug "index"}}
 <a href="{{$.BasePath}}{{.Slug}}.html">{{.Title}}</a>
-{{end}}{{end}}`
+{{end}}{{end}}
+<a href="{{$.BasePath}}resume.pdf">Resume</a>
+<a href="https://www.linkedin.com/in/eric-dudley-894721106/">LinkedIn</a>
+`
 
 // blogContent defines the content template for the blog listing page
 const blogContent = `
@@ -235,9 +238,9 @@ const postContent = `<article>
 
 // pageContent defines the content template for individual pages
 const pageContent = `<article>
-    <header class="page-header">
+    {{if .Page.Title}}<header class="page-header">
         <h1 class="page-title">{{.Page.Title}}</h1>
-    </header>
+    </header>{{end}}
     <div class="content">{{.Page.Content}}</div>
 </article>`
 
