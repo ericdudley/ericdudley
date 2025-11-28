@@ -52,7 +52,7 @@ You can now avoid making actual edits to the code at all, just type "you did it 
 
 # The problem
 
-Coding with AI is like turning on advanced self-driving in a car, as the human, you aren't driving faster, you don't have improved handling or more ergonomic seats, you're just doing different tasks. Now instead of constantly managing the throttle and brake, you're instead setting a target speed, or perhaps even a speed "preference". Rather than interpreting road signs and lane lines, you're interpreting the GPS map, and ensuring that the input destination is accurate enough. The more advanced the self-driving features are, the less it feels like "driving" and the more it feels like "passenger-ing".
+Coding with AI is like turning on advanced self-driving in a car, as the human, you aren't driving faster, you don't have improved handling or more ergonomic seats, you're just doing different tasks. Now instead of constantly managing the throttle and brake, you're instead setting a target speed, or perhaps even a speed "preference". Rather than interpreting road signs and lane lines, you're interpreting the GPS map, and ensuring that the input destination is accurate enough. The more advanced the self-driving features are, the less it feels like "driving" and the more it feels like you're sitting in a taxi telling the driver where you'd like to go.
 
 As the AI-coding tools have evolved, they've moved farther from "coding" and closer to "collaborating", the AI-tools are no longer tools that improve the coding experience but are now collaborators with input of their own.
 
@@ -63,13 +63,15 @@ As the AI-coding tools have evolved, they've moved farther from "coding" and clo
 \-----/   -----
   bot      me
 
-If you try to use AI-coding tools for every task, it feels like you're in a 24/7 pair coding meeting with another engineer. For smaller tasks, you supervise them do things and they often do a good job. For complex or highly ambiguous tasks, at first you try to guide them in a direction until they eventually fail. You then take over the keyboard, but as you problem solve, between each keystroke they're constantly commenting about what you're doing, trying to pull the keyboard back from you, even before you know which direction you yourself are trying to go in.
+If you try to use AI-coding tools for every task, it feels like you're in a 24/7 pair coding meeting with another engineer. For smaller tasks, you supervise them doing things and they often do a good job. For complex or highly ambiguous tasks, at first you try to guide them in a direction until they eventually fail. You then take over the keyboard, but as you problem solve, between each keystroke they're constantly interrupting your work with suggestions, trying to pull the keyboard back from you, even before you know which direction you yourself are trying to go in.
+
+After having to constantly adjust my work habits as AI coders has evolved, I think I've found a structure that (hopefully) will work sustainably for me.
 
 # The solution
 
 I don't want to stop using AI tools, but I want to be able to break out of the 24/7 pair coding when I need to "code" rather than "collaborate".
 
-My solution? A second code editor. Zed is a highly performant editor, that has a lot of similarities with VS Code, from general UX, to extensibility. It even has its own integrated AI features, but, importantly, it has a single setting that turns off all AI features. I've set up Zed like a faster more lightweight version of VS Code, but you could also achieve this with a separate VS Code workspace, with AI settings disabled. 
+My solution? A second code editor. While any secondary editor would suffice, I've chosen Zed. Zed is a highly performant editor, that has a lot of similarities with VS Code, from general UX, to extensibility. It even has its own integrated AI features, but, importantly, it has a single setting that turns off all AI features. By using a second editor, I have strong psychological separation between the two very different mindsets of collaborating with an AI coder versus working on problems by myself. 
 
 ------------------  
 | o o o     Zed  |  
@@ -81,14 +83,13 @@ My solution? A second code editor. Zed is a highly performant editor, that has a
 I now have two main workspaces, my AI code editor (VS Code) and my non-AI code editor (Zed). 
 
 
-I treat my AI-code editor more like Slack, where I can talk to another engineer, maybe give them little code snippets and pointers of where to look in the repo. Maybe we'll "pair code", and I'll guide them to different files and enter some initial edits before they start predicting what the next edits should be on their own. If they get stuck on a problem or aren't quite doing things right, my job is to break it down and unblock them by reducing ambiguity. For this, I jump over to my non-AI editor Zed.
+I treat my AI-code editor more like Slack, where I can talk to another engineer, maybe give them little code snippets and pointers of where to look in the repo. Maybe we'll "pair code", and I'll guide them to different files and enter some initial edits before they start predicting what the next edits should be on their own. If they get stuck on a problem or aren't quite doing things right, my job is to break it down and unblock them by reducing ambiguity. When I need to solve these problems myself, I jump over to my non-AI editor Zed.
 
-In Zed, I can explore, build, fail, and in general create without having to constantly deal with the "precense" of the AI editing tools. Not only do they not interrupt my thoughts or push me in directions I wasn't planning on going in, but I'm also stopped from the temptation to reach out to the AIs for ideation. It's similar to how, you might be tempted to ask someone in the room with you to solve a problem or think of how to approach something, even if you would really benefit from the process of solving it yourself.
+In Zed, I can explore, build, fail, and in general create without having to constantly deal with the "presence" of the AI editing tools. Not only do they not interrupt my thoughts or push me in directions I wasn't planning on going in, but I'm also stopped from the temptation to reach out to the AIs for ideation. It's similar to how you might be tempted to ask someone in the room with you to solve a problem or think of how to approach something, even if you would really benefit from the process of solving it yourself.
 
-What about if I do want to ideate with the AI tools? Of course, it's useful to go back and forth with an LLM to explore topics, it might be able to help you understand a problem or reveal to you a library or solution that you wouldn't know about. To me this is best achieved via a chat interface or "explore" mode with agents where it can use "read" tools but not "write" tools. 
+This doesn't mean I never ideate with AI, of course. Utilizing AI in a read-only mode, with exploratory prompts is great for exploring a problem space and having a brainstorming partner to bounce ideas off of.
 
-
-A common process I now use is:
+Bringing this all together, here's a summary of a common process I use these days:
 1. Use an AI chat interface to explore a topic, come up with some options, learn about things I didn't know about. Going back and forth with the model.
 2. Go into my personal notes to solidify the direction I want to go in, before jumping into Zed to implement some high quality code, establishing patterns and architecture, leaving in the "gaps" that I think my AI collaborator can handle.
 3. Jump over to VS Code, and delegate filling in the gaps to the AI agent, using a prompt that directs it to plan, implement, run tests, and iterate until it's achieved the goal. 
@@ -97,10 +98,12 @@ While I have the AI working on one task, I can jump back to step 1 or step 2 and
 
 # Conclusion
 
-I now have what feels like a "functional" relationship with AI-coding tools, as they improve, it feels like my collaboration sessions require less hand-holding and I can delegate higher complexity tasks. Likewise, as my prompting skills and general awareness of the AI-systems capabilities improve, I get better work out of them. 
+I now have what feels like a "functional" relationship with AI-coding tools, as they improve, it feels like my collaboration sessions require less hand-holding and I can delegate higher complexity tasks. Likewise, as my prompting skills and general awareness of the AI systems capabilities improve, I get better work out of them. 
 
 However, importantly, my creative process, my problem solving process, the time spent deciding what to do and how I want to achieve it, can stay in its own space. 
 
 Maybe one day soon, that time will actually just be spent drafting technical docs, drawing wire frames, and recording audio descriptions of what I want and watching the AI build entire systems, never touching any code at all. Even in such a world, there is still a crucial need for this non-AI creative space.
 
-Hopefully, even the most advanced self-driving car will still ask you where you want to go, and then help you get there.
+For now, with this process I've been able to both maintain the higher-productivity I get from using AI coding tools, without losing my creativity or skill in the craft of building things with software. 
+
+Hopefully, even the most advanced self-driving car will still always ask you where you want to go, and then help you get there.
